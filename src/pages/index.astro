@@ -1,7 +1,24 @@
 ---
 import Layout from '../layouts/Layout.astro';
+import Image from 'astro/components/Image.astro';
+import DesktopIcon from './desktop_icon.astro';
+
+import FileImage from '../assets/top/file.png';
+import TextImage from '../assets/top/text.png';
+import MailImage from '../assets/top/ml.png';
 ---
 
 <Layout>
-	NITGC 電算部
+	<lu class="icon">
+		<li> <DesktopIcon src={MailImage} title="news"/> </li>
+		<li> <DesktopIcon src={FileImage} title="blog"/> </li>
+		<li> <DesktopIcon src={FileImage} title="magazine"/> </li>
+		<li> <DesktopIcon src={TextImage} title="about"/> </li>
+	</lu>
 </Layout>
+
+<style>
+	li{
+		list-style: none;
+	}
+</style>
