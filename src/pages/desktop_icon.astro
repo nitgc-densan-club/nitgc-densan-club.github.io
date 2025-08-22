@@ -3,20 +3,28 @@
 import { Image } from 'astro:assets';
 import TextFileImage from '../assets/top/text.png'
 
-const { src=TextFileImage, title="", title_font_size="32px" } = Astro.props
+const { href, src=TextFileImage, title="", title_font_size="32px" } = Astro.props
 
 ---
 
-<div class="desktop_icon">
+<a href={ href } class="desktop_icon">
+
   <div class="desktop_icon_img">
     <Image src={ src } alt="">
-  </div>
-  <p>{ title }</p>
-</div>
+    </div>
+
+  <div class="desktop_icon_title">{ title }</a>
+</a>
 
 <style define:vars={{ title_font_size }}>
   *{
     font-family: 'Jersey 10';
+  }
+  a{
+    display: block;
+
+    color: black;
+    text-decoration-line: none;
   }
 
   .desktop_icon{
@@ -39,7 +47,7 @@ const { src=TextFileImage, title="", title_font_size="32px" } = Astro.props
     width: 64px;
     height: 64px;
   }
-  p{
+  .desktop_icon_title{
     margin: 0;
 
     font-style: normal;
