@@ -3,7 +3,7 @@
 import { Image } from 'astro:assets';
 import TextFileImage from '../assets/top/text.png'
 
-const { src=TextFileImage, title="" } = Astro.props
+const { src=TextFileImage, title="", title_font_size="32px" } = Astro.props
 
 ---
 
@@ -14,7 +14,7 @@ const { src=TextFileImage, title="" } = Astro.props
   <p>{ title }</p>
 </div>
 
-<style>
+<style define:vars={{ title_font_size }}>
   *{
     font-family: 'Jersey 10';
   }
@@ -42,7 +42,7 @@ const { src=TextFileImage, title="" } = Astro.props
 
     font-style: normal;
     font-weight: 400;
-    font-size: 32px;
+    font-size: var(--title_font_size);
     line-height: 34px;
     text-align: center;
   }
