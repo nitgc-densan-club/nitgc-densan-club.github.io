@@ -12,12 +12,12 @@ import LogoImage from '../assets/top/20250630_073505000_iOS.png'
 <Layout>
 	<Image src={LogoImage} alt="電算部 ロゴ"/>
 
-	<lu class="icon">
-		<li> <DesktopIcon src={MailImage} title="news"/> </li>
+	<ul class="icon">
+		<li> <DesktopIcon href="https://docs.astro.build/ja/guides/routing/" src={MailImage} title="news"/> </li> 
 		<li> <DesktopIcon src={FileImage} title="blog"/> </li>
 		<li> <DesktopIcon src={FileImage} title="magazine" title_font_size="20px"/> </li>
 		<li> <DesktopIcon src={TextImage} title="about"/> </li>
-	</lu>
+	</ul>
 </Layout>
 
 <style>
@@ -31,10 +31,13 @@ import LogoImage from '../assets/top/20250630_073505000_iOS.png'
 
 		object-fit: cover;
 	}
-	lu{
+	ul{
 		position: absolute;
 		top: 48px;
 		left: 16px;
+
+		margin: 0;
+		padding: 0;
 	}
 	li{
 		list-style: none;
