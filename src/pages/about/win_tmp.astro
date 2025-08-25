@@ -1,0 +1,37 @@
+---
+/*
+ * これは一時的なファイルです。実装時には共通部分として作られた、ウィンドウのデザインに置き換えます。
+ */
+---
+<div class="oya">
+  <div class="ko">
+    <slot/>
+  </div>
+</div>
+
+<style>
+  .oya{
+    position: absolute;
+    top: 0;
+    left: 0;
+    margin: 0;
+    padding: 0;
+
+    display: flex;
+
+    width: 100%;
+    height: 100%;
+
+    align-items: center;
+    justify-content: center;
+  }
+  .ko{
+    width: calc(100% - 35px);
+    height: calc(100% - 35px);
+
+    margin: 0;
+    padding: auto;
+
+    background-color: beige;
+  }
+</style>
