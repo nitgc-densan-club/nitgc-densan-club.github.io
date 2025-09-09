@@ -8,36 +8,37 @@ const { containts } = Astro.props
 
 <div class="document" set:html={containts}/>
 
-<style is:global>
+<style>
   .document{
     font-family: "DotGothic16";
     margin: 0;
     padding: 60px 5%;
-  }
-  .document > h1{
-    margin-top: 72px;
-    border-bottom: 5px solid #8C9991;
+    
+    h1{
+      margin-top: 72px;
+      border-bottom: 5px solid #8C9991;
 
-    font-size: 36px;
-  }
-  .document > h2{
-    margin-top: 54px;
-    border-bottom: 3px solid #8C9991;
+      font-size: 36px;
+    }
+    h2{
+      margin-top: 54px;
+      border-bottom: 3px solid #8C9991;
 
-    font-size: 32px;
-  }
-  .document > h3{
-    margin-top: 54px;
-    border-bottom: 3px solid #8C9991;
+      font-size: 32px;
+    }
+    h3{
+      margin-top: 54px;
+      border-bottom: 3px solid #8C9991;
 
-    font-size: 28px;
-  }
-  .document > p{
-    font-size: 16px;
-    margin: 10px 0;
-  }
-  .document > p > a{
-    color: #4C5B5C;
-    text-decoration: underline;
+      font-size: 28px;
+    }
+    p{
+      font-size: 16px;
+      margin: 10px 0;
+    }
+    p > a{
+      color: #4C5B5C;
+      text-decoration: underline;
+    }
   }
 </style>
