@@ -1,12 +1,14 @@
 ---
 import Layout from '../../layouts/Layout.astro';
 import RichTextStyler from '../../components/RichTextStyler.astro';
+import { getAbout } from '../../libs/microcms'
 
-const Containts = "<h1>H1ヘッダーだよ</h1> <h2>H2ヘッダーだよ</h2> <h3>H3ヘッダーだよ</h3> <p>pタグだよ。<a href='https://google.com'>グーグルへのリンクだよ。<a/></p>"
+const response = await getAbout();
+const body = response.body;
 ---
 
 <Layout window={ true }>
-  <RichTextStyler containts={Containts}/>
+  <RichTextStyler containts={body}/>
 </Layout>
 
 <style>
