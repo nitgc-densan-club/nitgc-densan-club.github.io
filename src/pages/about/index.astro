@@ -1,14 +1,14 @@
 ---
 import Layout from '../../layouts/Layout.astro';
 import Window from './win_tmp.astro';
-import Doc from './doc.astro';
+import RichTextStyler from '../../components/RichTextStyler.astro';
 
 const Containts = "<h1>H1ヘッダーだよ</h1> <h2>H2ヘッダーだよ</h2> <h3>H3ヘッダーだよ</h3> <p>pタグだよ。<a href='https://google.com'>グーグルへのリンクだよ。<a/></p>"
 ---
 
 <Layout>
   <Window>
-    <Doc containts={Containts}/>
+    <RichTextStyler containts={Containts}/>
   </Window>
 </Layout>
 
