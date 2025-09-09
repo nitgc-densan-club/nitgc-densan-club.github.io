@@ -1,8 +1,45 @@
 ---
 import Layout from '../layouts/Layout.astro';
+import Image from 'astro/components/Image.astro';
+import DesktopIcon from './desktop_icon.astro';
+
+import FileImage from '../assets/top/file.png';
+import TextImage from '../assets/top/text.png';
+import MailImage from '../assets/top/ml.png';
+import LogoImage from '../assets/top/20250630_073505000_iOS.png'
 ---
 
 <Layout>
-	NITGC 電算部
+	<Image src={LogoImage} alt="電算部 ロゴ"/>
+
+	<ul class="icon">
+		<li> <DesktopIcon href="https://docs.astro.build/ja/guides/routing/" src={MailImage} title="news"/> </li> 
+		<li> <DesktopIcon src={FileImage} title="blog"/> </li>
+		<li> <DesktopIcon src={FileImage} title="magazine" title_font_size="20px"/> </li>
+		<li> <DesktopIcon src={TextImage} title="about"/> </li>
+	</ul>
 </Layout>
 
+<style>
+	img{
+		position: absolute;
+		top: 10px;
+		right: 10px;
+
+		width: 169px;
+		height: 90px;
+
+		object-fit: cover;
+	}
+	ul{
+		position: absolute;
+		top: 48px;
+		left: 16px;
+
+		margin: 0;
+		padding: 0;
+	}
+	li{
+		list-style: none;
+	}
+</style>

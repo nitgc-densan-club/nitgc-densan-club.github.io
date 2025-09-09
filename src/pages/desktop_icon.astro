@@ -1,0 +1,59 @@
+---
+
+import { Image } from 'astro:assets';
+import TextFileImage from '../assets/top/text.png'
+
+const { href, src=TextFileImage, title="", title_font_size="32px" } = Astro.props
+
+---
+
+<a href={ href } class="desktop_icon">
+
+  <div class="desktop_icon_img">
+    <Image src={ src } alt="">
+    </div>
+
+  <div class="desktop_icon_title">{ title }</a>
+</a>
+
+<style define:vars={{ title_font_size }}>
+  *{
+    font-family: 'Jersey 10';
+  }
+  a{
+    display: block;
+
+    color: black;
+    text-decoration-line: none;
+  }
+
+  .desktop_icon{
+    width: 96px;
+    height: 96px;
+
+    margin-bottom: 16px;
+
+    justify-content: center;
+  }
+  .desktop_icon_img{
+    display: flex;
+
+    width: 100%;
+    height: 64px;
+  
+    justify-content: center;
+  } 
+  img{
+    width: 64px;
+    height: 64px;
+  }
+  .desktop_icon_title{
+    margin: 0;
+
+    font-style: normal;
+    font-weight: 400;
+    font-size: var(--title_font_size);
+    line-height: 34px;
+    text-align: center;
+  }
+</style>
