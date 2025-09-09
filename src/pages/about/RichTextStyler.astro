@@ -1,0 +1,44 @@
+---
+/**
+ * CMSから取得したリッチテキストを表示するためのコンポーネントです。aboutページに限らず使えるようにlayoutにした方が良いかもしれません。
+ * */
+
+const { containts } = Astro.props
+---
+
+<div class="document" set:html={containts}/>
+
+<style>
+  .document{
+    font-family: "DotGothic16";
+    margin: 0;
+    padding: 60px 5%;
+    
+    h1{
+      margin-top: 72px;
+      border-bottom: 5px solid #8C9991;
+
+      font-size: 36px;
+    }
+    h2{
+      margin-top: 54px;
+      border-bottom: 3px solid #8C9991;
+
+      font-size: 32px;
+    }
+    h3{
+      margin-top: 54px;
+      border-bottom: 3px solid #8C9991;
+
+      font-size: 28px;
+    }
+    p{
+      font-size: 16px;
+      margin: 10px 0;
+    }
+    p > a{
+      color: #4C5B5C;
+      text-decoration: underline;
+    }
+  }
+</style>
