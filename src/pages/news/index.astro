@@ -1,0 +1,161 @@
+---
+import Layout from '../../layouts/Layout.astro';
+---
+
+
+<script>
+/*
+白：F8FAEF
+うす緑：CCDAB9
+緑：98A786
+暗いうす緑：8C9991
+暗い緑：4C5B5C
+
+*/
+
+const show = document.getElementById('show');
+const hide = document.getElementById('hide');
+const detail = document.getElementById('detail');
+const content = document.getElementById('content');
+
+show.addEventListener('click', () => {
+    // 要素の表示状態を切り替える
+    if (detail.style.display === 'none') {
+        detail.style.display = 'block';
+    }
+    if (content.style.display === 'block') {
+        content.style.display = 'none';
+    }
+});
+
+hide.addEventListener('click', () => {
+    // 要素の表示状態を切り替える
+    if (detail.style.display === 'block') {
+        detail.style.display = 'none';
+    }
+    if (content.style.display === 'none') {
+        content.style.display = 'block';
+    }
+});
+
+/*const news=[
+  {
+    title:"件名:新ホームページ公開しました",
+    date:"2025/09/30",
+    text:"サンプルテキストです。"
+  },
+
+  {
+    title:"件名:新ホームページ公開しました",
+    date:"2025/09/30",
+    text:"サンプルテキストです。"
+  }
+
+];
+
+
+
+
+const newsContainer=document.getElementById('news');
+news.forEach( content=> {
+  const newsHTML=`
+
+  <div id="title" style="display: block;">
+  <button id="show">
+    <article style="height:200px; background:#F8FAEF; border: thin #000 solid;">
+      <div style="display:flex;justify-content: space-between; width:100%">
+      <p style="font-size:16px; text-align: left;">${content.title}</p>
+      <p style="font-size:16px; text-align: right;">${content.date}</p>
+      </div>
+      <p style="font-size:13px; text-align: left;">from:densan-club-nitgc</p>
+      <hr style="border: none; border-top: 1.5px dotted ;">
+      <p style="font-size:20px; overflow: hidden; line-height: 1.5rem;
+                display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 5;
+        ">${content.text}</p>
+    </article>
+    </button>
+    </div>
+
+  `;
+  newsContainer.innerHTML += newsHTML;
+  
+});*/
+
+
+
+
+</script>
+
+<Layout title="ニュース">
+
+<body style="display: flex; justify-content: center;">
+
+  <div id="news" style="display:block;"></div>
+
+
+  <div id="content" style="display: block;">
+  <button id="show" style=" border: none; margin: 0px; padding: 0px;">
+    <article style="height:200px; background:#F8FAEF; border: thin #000 solid;">
+      <div style="display:flex;justify-content: space-between; width:100%">
+      <p style="font-size:16px; text-align: left;">件名:新ホームページ公開しました</p>
+      <p style="font-size:16px; text-align: right;">2025/09/30</p>
+      </div>
+      <p style="font-size:13px; text-align: left;">from:densan-club-nitgc</p>
+      <hr style="border: none; border-top: 1.5px dotted ;">
+      <p style="font-size:20px; overflow: hidden; line-height: 1.5rem;
+                display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 5;
+        ">サンプルテキストオおおおおおおおおおおおおおおおおおおおおおおおおおおおおおおおおおおおおおおおおおおおおおおおおおおおおおおおおおおおおおおおおおおおおおおおおおおおおおおおおおおおおおおおおおおおお</p>
+    </article>
+    </button>
+    </div>
+    
+
+    <div id="detail" style="display: none; background-color: #F8FAEF; height: 100%;">
+
+      <div style="background-color: #F8FAEF; width:100%;  top: 0px; left: 0px; border: thin #000 solid; position: fixed;">
+      <button id="hide"><img src="src/pages/news/BackArrow.png" style="width: 48px; height:48px;"></button>
+      </div>
+
+      <div style="background-color: #F8FAEF; width:100%;  top: 0px; left: 0px; border: thin #000 solid; position: fixed;">
+       <!-- 固定したものの背景-->
+      </div>
+
+      <div style="width: 100%; height:48px;">
+        <!-- 上側固定のための空白 -->
+      </div>
+
+      <p style="font-size:16px; text-align: right;">2025/09/30</p>
+      <p style="font-size:16px; text-align: left;">件名:新ホームページ公開しました</p>
+      <p style="font-size:13px; text-align: rleft;">from:densan-club-nitgc</p>
+      <hr style="border: none; border-top: 1.5px dotted;">
+      <p style="font-size:20px;">サンプルテキスト</p>
+    </div>
+      
+  </body>
+
+  </Layout>
+  
+  <style>
+
+  p{
+    margin: 5px 7px;
+  }
+
+   .txt-limit {
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 5;
+    line-height: 1.5rem;
+  }
+  
+  .PointLine {
+    background-image: linear-gradient(to right, #333 80%, transparent 80%);
+    background-size: 10px 4px;
+    background-repeat: repeat-x;
+    background-position: left bottom;
+  }
+
+  
+
+</style>
