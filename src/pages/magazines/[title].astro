@@ -1,0 +1,159 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { getMagazine } from '../../libs/microcms';
+import Arrow from '../../assets/magazines/leftArrow.png';
+import { Image } from 'astro:assets';
+
+const response=await getMagazine();
+const contents=response.contents;
+export async function getStaticPaths () {
+  const response=await getMagazine();
+  const contents=response.contents;
+  return contents.map((contents)=>(
+    {
+      params:{title: contents.title}
+    })
+  );
+}
+const {title}=Astro.params;
+const item =contents.find(contents=>contents.title===title)
+const url=item?.url;
+---
+<Layout>
+<div id="container" data-url={url}></div>
+<div  class="custom-main">
+<div class="pdfsize">
+<a href="./" class="back">
+<Image src={Arrow} alt="" width={30}/>
+</a>
+<canvas id="the-canvas" ></canvas>
+</div>
+  <div class="prevnext">
+  <button id="prev" type="button">Back</button>
+  <button id="next" type="button">Next</button>
+  <br>
+  <span>Page: <span id="page_num"></span> / <span id="page_count"></span></span>
+</div>
+<script src="/build/pdf.mjs" type="module"></script>
+
+</div>
+
+<script id="script" type="module" >
+
+
+
+(async () => {
+
+const container = document.getElementById('container');
+const pdfPath = container.dataset.url;
+
+pdfjsLib.GlobalWorkerOptions.workerSrc = "/build/pdf.worker.mjs";
+
+var canvas = document.getElementById("the-canvas");
+var context = canvas.getContext("2d");
+ var pdfDoc = null,
+      pageNum = 1,
+      pageRendering = false,
+      pageNumPending = null,
+      scale = 0.8;
+
+ function renderPage(num) {
+    pageRendering = true;
+    // Using promise to fetch the page
+    pdfDoc.getPage(num).then(function(page) {
+      var viewport = page.getViewport({ scale: scale, });
+      // Support HiDPI-screens.
+      var outputScale = window.devicePixelRatio || 1;
+
+      var transform = outputScale !== 1
+        ? [outputScale, 0, 0, outputScale, 0, 0]
+        : null;
+
+      // Render PDF page into canvas context
+      var renderContext = {
+        canvasContext: context,
+        transform: transform,
+        viewport: viewport,
+      };
+        var renderTask = page.render(renderContext);
+        canvas.width = Math.floor(viewport.width * outputScale);
+        canvas.height = Math.floor(viewport.height * outputScale);
+        canvas.style.width = Math.floor(viewport.width) + "px";
+        canvas.style.height = Math.floor(viewport.height) + "px";
+      // Wait for rendering to finish
+      renderTask.promise.then(function () {
+        pageRendering = false;
+        if (pageNumPending !== null) {
+          // New page rendering is pending
+          renderPage(pageNumPending);
+          pageNumPending = null;
+        }
+      });
+    });
+
+    // Update page counters
+    document.getElementById('page_num').textContent = num;
+  }
+
+ function queueRenderPage(num) {
+    if (pageRendering) {
+      pageNumPending = num;
+    } else {
+      renderPage(num);
+    }
+  }
+
+function onPrevPage() {
+    if (pageNum <= 1) {
+      return;
+    }
+    pageNum--;
+    queueRenderPage(pageNum);
+  }
+  document.getElementById('prev').addEventListener('click', onPrevPage);
+
+ function onNextPage() {
+    if (pageNum >= pdfDoc.numPages) {
+      return;
+    }
+    pageNum++;
+    queueRenderPage(pageNum);
+  }
+  document.getElementById('next').addEventListener('click', onNextPage);
+  if(pdfPath==undefined){
+     var loadingTask = pdfjsLib.getDocument("../../src/assets/magazines/no_image.pdf");
+  }else{
+  var loadingTask = pdfjsLib.getDocument(pdfPath);
+  }
+  pdfDoc = await loadingTask.promise;
+  document.getElementById('page_count').textContent = pdfDoc.numPages;
+  renderPage(pageNum);
+})();
+</script>
+</Layout>
+
+<style>
+  .pdfsize{
+    width: auto;
+    overflow: auto;
+  }
+  .custom-main{
+    width: auto;
+    height: 100%;
+      background-color: #F8FAEF;
+   }
+  .prevnext{
+    font-size: 30px;
+    color: #4C5B5C;
+  }
+  #prev{
+     float: left;
+  }
+  #next{
+    float: right;
+  }
+.back{
+display: inline-block;
+margin: 2px;
+}
+</style>
