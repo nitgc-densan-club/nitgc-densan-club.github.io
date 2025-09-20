@@ -18,7 +18,7 @@ const NewsList = response.contents;
 
   const content = document.getElementById("content");
   const detail = document.getElementById("detail");
-  const back = document.getElementById("BackButton");
+  const back = document.getElementById("back");
 
   //ニュース詳細のそれぞれに番号を付ける
   const DetailCards = document.getElementsByClassName("DetailCard");
@@ -28,7 +28,7 @@ const NewsList = response.contents;
   }
 
   /*一覧のどれかが押された際に一覧をすべて非表示にし(一覧をまとめているdivが非表示になる)押された一覧に対応する詳細を表示*/
-  let ContentList = document.getElementsByClassName("NewsButton");
+  let ContentList = document.getElementsByClassName("news");
 
   for (let k = 0; k <= ContentList.length - 1; k++) {
     ContentList[k].addEventListener("click", () => {
@@ -78,7 +78,12 @@ const NewsList = response.contents;
 
   for (let k = 0; k <= NewsDateList.length - 1; k++) {
     const str = NewsDateList[k]!.textContent;
-      NewsDateList[k]!.textContent = str.substring(0, 4)+'/'+str.substring(5, 7)+'/'+str.substring(8, 10);
+    NewsDateList[k]!.textContent =
+      str.substring(0, 4) +
+      "/" +
+      str.substring(5, 7) +
+      "/" +
+      str.substring(8, 10);
   }
 
   /*ニュース詳細の更新日時(updatedAt)をYYYY-MM-DDに省略*/
@@ -86,9 +91,13 @@ const NewsList = response.contents;
 
   for (let k = 0; k <= DetailDateList.length - 1; k++) {
     const str = DetailDateList[k]!.textContent;
-      DetailDateList[k]!.textContent = str.substring(0, 4)+'/'+str.substring(5, 7)+'/'+str.substring(8, 10);
+    DetailDateList[k]!.textContent =
+      str.substring(0, 4) +
+      "/" +
+      str.substring(5, 7) +
+      "/" +
+      str.substring(8, 10);
   }
-
 </script>
 
 <Layout title="ニュース">
@@ -97,7 +106,6 @@ const NewsList = response.contents;
       {
         /*一覧を生成*/
         NewsList.map((news) => (
-          <button class="NewsButton">
             <div class="news">
               <div class="TopText">
                 <p class="NewsTitle">件名:{news.title}</p>
@@ -107,16 +115,17 @@ const NewsList = response.contents;
               <div class="dotbox" />
 
               <div class="NewsText TextOmission" set:html={news.body} />
+              <p class="ReadMore">続きを読む</p>
             </div>
-          </button>
         ))
       }
     </div>
 
     <div id="detail" class="detail" style="display: none;">
       <div class="FixedHeader">
-        <button class="BackButton" id="BackButton">
-          <div class="arrow"></div>
+          <div class="back" id="back">
+            <div class="arrow" id="arrow"></div>
+            </div>
         </button>
       </div>
       <div class="BackBlank"></div>
@@ -174,6 +183,7 @@ const NewsList = response.contents;
     text-align: left;
     font-size: 20px;
     margin: 4px 7px;
+    height:45%;
   }
 
   .news {
@@ -181,14 +191,6 @@ const NewsList = response.contents;
     width: 100vw;
     background: #f8faef;
     border: thin #000 solid;
-  }
-
-  /*一覧で押すとそのニュースの詳細に飛ぶ*/
-  .NewsButton {
-    border: none;
-    margin: 0px;
-    padding: 0px;
-    cursor: pointer;
   }
 
   /*件名(title)と日時(date)の並び方*/
@@ -205,6 +207,11 @@ const NewsList = response.contents;
     display: -webkit-box;
     -webkit-box-orient: vertical;
     -webkit-line-clamp: 5;
+  }
+
+  .ReadMore {
+    text-align: right;
+    vertical-align: text-bottom;
   }
 
   /*detailのみに適用するCSS*/
@@ -268,6 +275,11 @@ const NewsList = response.contents;
     margin: 4px 7px;
   }
 
+  .back{
+    width: 30px;
+    height: 30px;
+    background: #f8faef;
+  }
 
   /*図形等*/
 
@@ -285,8 +297,12 @@ const NewsList = response.contents;
   .arrow {
     width: 17px;
     height: 17px;
+    margin: 0px;
+    padding: 0px;
+    border: none;
+    cursor: pointer;
     border: 3px solid;
     border-color: transparent transparent #565656 #565656;
-    transform: translate(10px) rotate(45deg);
+    transform: translate(10px,5px) rotate(45deg);
   }
 </style>
