@@ -30,7 +30,7 @@ const {title, window} = Astro.props;
   </head>
   <body>
     <main>
-      {window? <Window window={window}><slot /></Window>:<slot />}
+      {window ? <Window window={window}><slot /></Window> : <slot />}
     </main>
     <Footer />
   </body>
@@ -61,5 +61,6 @@ const {title, window} = Astro.props;
 
   main {
     flex-grow: 1;
+    min-height: 0;
   }
 </style>

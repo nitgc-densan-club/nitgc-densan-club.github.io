@@ -9,7 +9,7 @@ const {width="100px", height="100px"} = Astro.props;
   <div class="b4"></div>
   <div class="main">
     <slot name="title-bar"/>
-    <div class="contents">
+    <div class="contents-area">
       <slot/>
     </div>
   </div>
@@ -73,7 +73,7 @@ const {width="100px", height="100px"} = Astro.props;
     flex-direction: column;
 	}
 
-  .contents{
+  .contents-area{
     flex-grow: 1;
     overflow: auto;
   }

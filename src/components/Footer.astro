@@ -83,6 +83,7 @@ import GitHub from '../assets/component/GitHub.png';
     display: flex;
     align-items: center;
     padding: 4px;
+    cursor: pointer;
   }
 
   .upArrow, .downArrow{
@@ -135,12 +136,12 @@ import GitHub from '../assets/component/GitHub.png';
 </style>
 
 <script>
-  // 時計表示
-  const digitAlign = (i)=>{
-    if (i<10){
-      i = "0"+i;
+  const digitAlign = (data: number)=>{
+    let strData = String(data)
+    if (strData.length < 2){
+      strData = "0" + strData;
     }
-    return i;
+    return strData;
   }
 
   const showClock = () =>{
@@ -152,8 +153,9 @@ import GitHub from '../assets/component/GitHub.png';
     let min = digitAlign(nowData.getMinutes());
     let top = hour + ":" + min;
     let bottom = year + "/" + month + "/" + date;
-    document.getElementById("realtime").innerHTML=top + "<br>" + bottom;
+    document.getElementById("realtime")!.innerHTML=top + "<br>" + bottom;
   }
+  showClock();
   setInterval(showClock,1000);
 
   // クリック時
@@ -163,12 +165,13 @@ import GitHub from '../assets/component/GitHub.png';
   let account = document.querySelector(".account");
   let upArrow = document.querySelector(".upArrow");
   let downArrow = document.querySelector(".downArrow");
-  footerLeft.addEventListener("click",()=>{
-    HPLink.classList.toggle("active");
+  
+  footerLeft!.addEventListener("click",()=>{
+    HPLink!.classList.toggle("active");
   },false)
-  footerRight.addEventListener("click",()=>{
-    upArrow.classList.toggle("active");
-    downArrow.classList.toggle("active");
-    account.classList.toggle("active");
+  footerRight!.addEventListener("click",()=>{
+    upArrow!.classList.toggle("active");
+    downArrow!.classList.toggle("active");
+    account!.classList.toggle("active");
   },false)
 </script>
