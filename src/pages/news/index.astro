@@ -1,56 +1,9 @@
 ---
 import Layout from "../../layouts/Layout.astro";
+import { getNews } from "../../libs/microcms";
 
-/*一覧ページに表示する内容(詳細の要素と連携)*/
-const NewsList = [
-  {
-    title: "件名:工華祭開催",
-    date: "2025/10/25",
-    from: "from:densan-club-nitgc",
-    text: "工華祭1日目が行われました",
-  },
-
-  {
-    title: "件名:後期開始",
-    date: "2025/09/24",
-    from: "from:densan-club-nitgc",
-    text: "夏休みが終わり、後期が始まりました",
-  },
-
-  {
-    title: "件名:新ホームページ公開",
-    date: "2025/09/01",
-    from: "from:densan-club-nitgc",
-    text: "新ホームページを公開しました",
-  },
-];
-
-/*詳細ページに表示する内容(一覧の要素と連携)*/
-const DetailList = [
-  {
-    title: "件名:工華祭開催",
-    date: "2025/10/25",
-    from: "from:densan-club-nitgc",
-    text: "工華祭1日目が行われました。電算部は図書館ホールで部誌の配布、部員作品の展示を行いました。明日(10/26)も同じ場所で行う予定です。",
-  },
-
-  {
-    title: "件名:後期開始",
-    date: "2025/09/24",
-    from: "from:densan-club-nitgc",
-    text: "夏休みが終わり、後期が始まりました。今年は工華祭のある年なので、部員一同張り切って準備に取り掛かっています。10月末に開催予定なので、ぜひ来てください！",
-  },
-
-  {
-    title: "件名:新ホームページ公開",
-    date: "2025/09/01",
-    from: "from:densan-club-nitgc",
-    text: "新ホームページを公開しました。web班のみんなで頑張って作ったホームページです。パソコンの画面をコンセプトにしていて、デザインや文字はドットになっています。",
-  },
-];
-
-var i = 0;
-var j = 0;
+const response = await getNews();
+const NewsList = response.contents;
 ---
 
 <script>
@@ -63,19 +16,19 @@ var j = 0;
 
 */
 
+  const content = document.getElementById("content");
+  const detail = document.getElementById("detail");
+  const back = document.getElementById("back");
+
   //ニュース詳細のそれぞれに番号を付ける
-  let DetailCards = document.getElementsByClassName("DetailCard");
+  const DetailCards = document.getElementsByClassName("DetailCard");
 
   for (let k = 0; k <= DetailCards.length - 1; k++) {
     DetailCards[k].setAttribute("id", "hide" + k);
   }
 
-  const content = document.getElementById("content");
-  const detail = document.getElementById("detail");
-  const back = document.getElementById("BackButton");
-
   /*一覧のどれかが押された際に一覧をすべて非表示にし(一覧をまとめているdivが非表示になる)押された一覧に対応する詳細を表示*/
-  let ContentList = document.getElementsByClassName("NewsButton");
+  let ContentList = document.getElementsByClassName("news");
 
   for (let k = 0; k <= ContentList.length - 1; k++) {
     ContentList[k].addEventListener("click", () => {
@@ -102,23 +55,49 @@ var j = 0;
 
   back!.addEventListener("click", () => {
     for (let k = 0; k <= DetailCards.length - 1; k++) {
-      const SDetailContent = document.getElementById("hide" + k);
+      const DetailContent = document.getElementById("hide" + k);
 
-      if (SDetailContent!.style.display === "block") {
-        SDetailContent!.style.display = "none";
+      if (DetailContent!.style.display === "block") {
+        DetailContent!.style.display = "none";
       }
     }
 
-      /*詳細非表示用の処理*/
-      if (detail!.style.display === "block") {
-        detail!.style.display = "none";
-      }
+    /*詳細非表示用の処理*/
+    if (detail!.style.display === "block") {
+      detail!.style.display = "none";
+    }
 
-      /*一覧表示用の処理*/
-      if (content!.style.display === "none") {
-        content!.style.display = "block";
+    /*一覧表示用の処理*/
+    if (content!.style.display === "none") {
+      content!.style.display = "block";
     }
   });
+
+  /*ニュース一覧の更新日時(updatedAt)をYYYY-MM-DDに省略*/
+  const NewsDateList = document.getElementsByClassName("NewsDate");
+
+  for (let k = 0; k <= NewsDateList.length - 1; k++) {
+    const str = NewsDateList[k]!.textContent;
+    NewsDateList[k]!.textContent =
+      str.substring(0, 4) +
+      "/" +
+      str.substring(5, 7) +
+      "/" +
+      str.substring(8, 10);
+  }
+
+  /*ニュース詳細の更新日時(updatedAt)をYYYY-MM-DDに省略*/
+  const DetailDateList = document.getElementsByClassName("DetailDate");
+
+  for (let k = 0; k <= DetailDateList.length - 1; k++) {
+    const str = DetailDateList[k]!.textContent;
+    DetailDateList[k]!.textContent =
+      str.substring(0, 4) +
+      "/" +
+      str.substring(5, 7) +
+      "/" +
+      str.substring(8, 10);
+  }
 </script>
 
 <Layout title="ニュース">
@@ -126,40 +105,39 @@ var j = 0;
     <div id="content" class="content" style="display:block;">
       {
         /*一覧を生成*/
-        NewsList.map((data) => (
-          <button class="NewsButton">
-            <div class="news PointL">
+        NewsList.map((news) => (
+            <div class="news">
               <div class="TopText">
-                <p class="title">{NewsList[i].title}</p>
-                <p class="date">{NewsList[i].date}</p>
+                <p class="NewsTitle">件名:{news.title}</p>
+                <p class="NewsDate">{news.updatedAt}</p>
               </div>
-              <p class="from">{NewsList[i].from}</p>
-              <div class="dotbox"></div>
-              
-              <p class="Text TextOmission">{NewsList[i++].text}</p>
+              <p class="NewsFrom">from:densan-club-nitgc</p>
+              <div class="dotbox" />
+
+              <div class="NewsText TextOmission" set:html={news.body} />
+              <p class="ReadMore">続きを読む</p>
             </div>
-          </button>
         ))
       }
     </div>
 
-
     <div id="detail" class="detail" style="display: none;">
       <div class="FixedHeader">
-        <button class="BackButton" id="BackButton">
-          <div class="arrow"></div>
+          <div class="back" id="back">
+            <div class="arrow" id="arrow"></div>
+            </div>
         </button>
       </div>
       <div class="BackBlank"></div>
       {
         /*詳細を生成*/
-        DetailList.map((data) => (
+        NewsList.map((detail) => (
           <div class="DetailCard" id="DetailCard" style="display: none;">
-            <p class="date">{DetailList[j].date}</p>
-            <p class="title">{DetailList[j].title}</p>
-            <p class="from">{DetailList[j].from}</p>
-            <div class="dotbox"></div>
-            <p class="Text">{DetailList[j++].text}</p>
+            <p class="DetailDate">{detail.updatedAt}</p>
+            <p class="DetailTitle">件名:{detail.title}</p>
+            <p class="DetailFrom">from:densan-club-nitgc</p>
+            <div class="dotbox" />
+            <div class="DetailText" set:html={detail.body} />
           </div>
         ))
       }
@@ -168,51 +146,51 @@ var j = 0;
 </Layout>
 
 <style>
+  body {
+    background-color: #f8faef;
+  }
+
   /*文字関係(一覧と詳細で形式が変わらないため共通)*/
 
   p {
     margin: 4px 7px;
   }
 
+  /*newsのみに適用するCSS*/
+
   /*件名*/
-  .title {
+  .NewsTitle {
     font-size: 16px;
     text-align: left;
   }
 
   /*日時*/
-  .date {
+  .NewsDate {
     font-size: 16px;
+    font-weight: bold;
     text-align: right;
   }
 
   /*送信元*/
-  .from {
+  .NewsFrom {
     font-size: 15px;
+    font-weight: bold;
     text-align: left;
   }
 
   /*本文*/
-  .Text {
+  .NewsText {
     text-align: left;
     font-size: 20px;
+    margin: 4px 7px;
+    height:45%;
   }
-
-  /*newsのみに適用するCSS*/
 
   .news {
     height: 200px;
     width: 100vw;
     background: #f8faef;
     border: thin #000 solid;
-  }
-
-  /*一覧で押すとそのニュースの詳細に飛ぶ*/
-  .NewsButton {
-    border: none;
-    margin: 0px;
-    padding: 0px;
-    cursor: pointer;
   }
 
   /*件名(title)と日時(date)の並び方*/
@@ -231,6 +209,11 @@ var j = 0;
     -webkit-line-clamp: 5;
   }
 
+  .ReadMore {
+    text-align: right;
+    vertical-align: text-bottom;
+  }
+
   /*detailのみに適用するCSS*/
 
   .detail {
@@ -244,7 +227,7 @@ var j = 0;
     width: 100%;
     top: 0px;
     left: 0px;
-    border: thin #000 solid;
+    border-bottom: thin #000 solid;
     position: fixed;
   }
 
@@ -265,18 +248,45 @@ var j = 0;
     background: #f8faef;
   }
 
-  /*図形等*/
-
-  /*点線(CSSで用意されているもの)*/
-  hr {
-    border: none;
-    border-top: 1.5px dotted;
+  /*件名*/
+  .DetailTitle {
+    font-size: 20px;
+    text-align: left;
   }
 
+  /*日時*/
+  .DetailDate {
+    font-size: 16px;
+    font-weight: bold;
+    text-align: right;
+  }
+
+  /*送信元*/
+  .DetailFrom {
+    font-size: 17px;
+    font-weight: bold;
+    text-align: left;
+  }
+
+  /*本文*/
+  .DetailText {
+    text-align: left;
+    font-size: 20px;
+    margin: 4px 7px;
+  }
+
+  .back{
+    width: 30px;
+    height: 30px;
+    background: #f8faef;
+  }
+
+  /*図形等*/
+
   /*点線(四角形を組み合わせて作成 サイズ変更可能)*/
-  .dotbox{
+  .dotbox {
     width: 100%;
-    height:5px;
+    height: 5px;
     background-image: linear-gradient(to right, #333 45%, transparent 45%);
     background-size: 8px 2px;
     background-repeat: repeat-x;
@@ -285,10 +295,14 @@ var j = 0;
 
   /*戻るボタン用の矢印*/
   .arrow {
-    width: 12px;
-    height: 12px;
+    width: 17px;
+    height: 17px;
+    margin: 0px;
+    padding: 0px;
+    border: none;
+    cursor: pointer;
     border: 3px solid;
     border-color: transparent transparent #565656 #565656;
-    transform: translate(10px) rotate(45deg);
+    transform: translate(10px,5px) rotate(45deg);
   }
 </style>
