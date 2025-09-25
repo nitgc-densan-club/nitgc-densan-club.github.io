@@ -1,0 +1,9 @@
+# nitgc-densan
+# お知らせ・ブログ・ブログタグ・班
+MICROCMS_MAIN_SERVICE=nitgc-densan
+MICROCMS_MAIN_APIKEY=VjqtsuzSVptMYXz7FoMlawe6TNowLr9uVJZg
+
+# nitgc-densan-sub
+# 部誌・About
+MICROCMS_SUB_SERVICE=nitgc-densan-sub
+MICROCMS_SUB_APIKEY=2tn0hxkApS2llTF5n2u1Yv96EBlAtkjske8X

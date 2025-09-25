@@ -8,7 +8,10 @@ const {width="100px", height="100px"} = Astro.props;
   <div class="b3"></div>
   <div class="b4"></div>
   <div class="main">
-    <slot/>
+    <slot name="title-bar"/>
+    <div class="contents-area">
+      <slot/>
+    </div>
   </div>
 </div>
 
@@ -65,8 +68,13 @@ const {width="100px", height="100px"} = Astro.props;
 	}
 
 	.main {
-    box-sizing: border-box;
 		background-color: #F8FAEF;
-    padding: 10px;
+    display: flex;
+    flex-direction: column;
 	}
+
+  .contents-area{
+    flex-grow: 1;
+    overflow: auto;
+  }
 </style>
