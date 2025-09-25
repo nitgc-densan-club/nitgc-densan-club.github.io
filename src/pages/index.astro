@@ -1,45 +1,73 @@
 ---
-import Layout from '../layouts/Layout.astro';
-import Image from 'astro/components/Image.astro';
-import DesktopIcon from './desktop_icon.astro';
+import Layout from "../layouts/Layout.astro";
+import Image from "astro/components/Image.astro";
+import DesktopIcon from "./desktop_icon.astro";
 
-import FileImage from '../assets/top/file.png';
-import TextImage from '../assets/top/text.png';
-import MailImage from '../assets/top/ml.png';
-import LogoImage from '../assets/top/20250630_073505000_iOS.png'
+import FileImage from "../assets/top/file.png";
+import TextImage from "../assets/top/text.png";
+import MailImage from "../assets/top/ml.png";
+import LogoImage from "../assets/top/20250630_073505000_iOS.png";
 ---
 
 <Layout>
-	<Image src={LogoImage} alt="電算部 ロゴ"/>
+  <Image src={LogoImage} alt="電算部 ロゴ" />
 
-	<ul class="icon">
-		<li> <DesktopIcon href="/news/" src={MailImage} title="ニュース" title_font_size="20px"/> </li> 
-		<li> <DesktopIcon href="/blog/" src={FileImage} title="ブログ" title_font_size="20px"/> </li>
-		<li> <DesktopIcon href="/magazines/" src={FileImage} title="部誌" title_font_size="20px"/> </li>
-		<li> <DesktopIcon href="/about/" src={TextImage} title="電算部について" title_font_size="20px"/> </li>
-	</ul>
+  <ul class="icon">
+    <li>
+      <DesktopIcon
+        href="/news/"
+        src={MailImage}
+        title="ニュース"
+        title_font_size="20px"
+      />
+    </li>
+    <li>
+      <DesktopIcon
+        href="/blog/"
+        src={FileImage}
+        title="ブログ"
+        title_font_size="20px"
+      />
+    </li>
+    <li>
+      <DesktopIcon
+        href="/magazines/"
+        src={FileImage}
+        title="部誌"
+        title_font_size="20px"
+      />
+    </li>
+    <li>
+      <DesktopIcon
+        href="/about/"
+        src={TextImage}
+        title="電算部について"
+        title_font_size="20px"
+      />
+    </li>
+  </ul>
 </Layout>
 
 <style>
-	img{
-		position: absolute;
-		top: 10px;
-		right: 10px;
+  img {
+    position: absolute;
+    top: 10px;
+    right: 10px;
 
-		width: 169px;
-		height: 90px;
+    width: 169px;
+    height: 90px;
 
-		object-fit: cover;
-	}
-	ul{
-		position: absolute;
-		top: 48px;
-		left: 16px;
+    object-fit: cover;
+  }
+  ul {
+    position: absolute;
+    top: 48px;
+    left: 16px;
 
-		margin: 0;
-		padding: 0;
-	}
-	li{
-		list-style: none;
-	}
+    margin: 0;
+    padding: 0;
+  }
+  li {
+    list-style: none;
+  }
 </style>

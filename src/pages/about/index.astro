@@ -1,18 +1,16 @@
 ---
-import Layout from '../../layouts/Layout.astro';
-import RichTextStyler from '../../components/RichTextStyler.astro';
-import { getAbout } from '../../libs/microcms'
+import Layout from "../../layouts/Layout.astro";
+import RichTextStyler from "../../components/RichTextStyler.astro";
+import { getAbout } from "../../libs/microcms";
 
-import TextImage from '../../assets/about/text.png'
+import TextImage from "../../assets/about/text.png";
 
 const response = await getAbout();
 const body = response.body;
 ---
 
-<Layout window={{ title:"about", iconURL:TextImage }}>
-  <RichTextStyler containts={body}/>
+<Layout window={{ title: "about", iconURL: TextImage }}>
+  <RichTextStyler containts={body} />
 </Layout>
 
-<style>
-  
-</style>
+<style></style>

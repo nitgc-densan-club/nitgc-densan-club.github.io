@@ -3,12 +3,12 @@ import Footer from "../components/Footer.astro";
 import Window from "../components/Window.astro";
 import type { WindowType } from "./types";
 
-interface Props{
+interface Props {
   window?: WindowType;
   title?: string;
 }
 
-const {title, window} = Astro.props;
+const { title, window } = Astro.props;
 ---
 
 <!doctype html>
@@ -30,7 +30,15 @@ const {title, window} = Astro.props;
   </head>
   <body>
     <main>
-      {window ? <Window window={window}><slot /></Window> : <slot />}
+      {
+        window ? (
+          <Window window={window}>
+            <slot />
+          </Window>
+        ) : (
+          <slot />
+        )
+      }
     </main>
     <Footer />
   </body>
@@ -62,6 +70,6 @@ const {title, window} = Astro.props;
   main {
     flex-grow: 1;
     min-height: 0;
-    background-color: #CCDAB9;
+    background-color: #ccdab9;
   }
 </style>
