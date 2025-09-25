@@ -1,5 +1,14 @@
 ---
 import Footer from "../components/Footer.astro";
+import Window from "../components/Window.astro";
+import type { WindowType } from "./types";
+
+interface Props {
+  window?: WindowType;
+  title?: string;
+}
+
+const { title, window } = Astro.props;
 ---
 
 <!doctype html>
@@ -9,7 +18,7 @@ import Footer from "../components/Footer.astro";
     <meta name="viewport" content="width=device-width" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="generator" content={Astro.generator} />
-    <title>Astro Basics</title>
+    <title>{title}</title>
 
     <!-- Font設定 -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -21,7 +30,15 @@ import Footer from "../components/Footer.astro";
   </head>
   <body>
     <main>
-      <slot />
+      {
+        window ? (
+          <Window window={window}>
+            <slot />
+          </Window>
+        ) : (
+          <slot />
+        )
+      }
     </main>
     <Footer />
   </body>
@@ -52,5 +69,7 @@ import Footer from "../components/Footer.astro";
 
   main {
     flex-grow: 1;
+    min-height: 0;
+    background-color: #ccdab9;
   }
 </style>

@@ -1,17 +1,16 @@
 ---
-import Layout from '../../layouts/Layout.astro';
-import Window from './win_tmp.astro';
-import Doc from './doc.astro';
+import Layout from "../../layouts/Layout.astro";
+import RichTextStyler from "../../components/RichTextStyler.astro";
+import { getAbout } from "../../libs/microcms";
 
-const Containts = "<h1>H1ヘッダーだよ</h1> <h2>H2ヘッダーだよ</h2> <h3>H3ヘッダーだよ</h3> <p>pタグだよ。<a href='https://google.com'>グーグルへのリンクだよ。<a/></p>"
+import TextImage from "../../assets/about/text.png";
+
+const response = await getAbout();
+const body = response.body;
 ---
 
-<Layout>
-  <Window>
-    <Doc containts={Containts}/>
-  </Window>
+<Layout window={{ title: "about", iconURL: TextImage }}>
+  <RichTextStyler containts={body} />
 </Layout>
 
-<style>
-  
-</style>
+<style></style>
