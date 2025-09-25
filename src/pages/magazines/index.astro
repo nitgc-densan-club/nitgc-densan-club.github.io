@@ -1,0 +1,120 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { Image } from 'astro:assets';
+import upArrow from '../../assets/magazines/arrow_up.png';
+import downArrow from '../../assets/magazines/arrow_down.png';
+import Searchicon from '../../assets/magazines/search.png';
+import { getMagazine } from '../../libs/microcms';
+
+const response=await getMagazine();
+const contents=response.contents;
+var n=0;
+---
+<script>
+
+const Searchdate=document.getElementById("Search");
+const element=document.getElementsByClassName("element");//変換前時刻
+const datelist=new Date(element).toLocaleDateString();
+const up=document.getElementsByClassName("up");
+const down=document.getElementsByClassName("down");
+
+
+Searchdate?.addEventListener('change',()=>{
+const data=Searchdate?.value;
+
+//elementidとdadaの一致判定
+//一致している時elementのクラスをいじる
+});
+
+
+</script>
+<!-- 残りのタスクー＞検索機能の実装、PDFビューワーの実装、cssの調整, -->
+<Layout>
+<div class="all">
+	<div class="search">
+		<div class="searchping">
+			<Image src={Searchicon} alt="" width={30} />
+			<input type="number"  id="Search" placeholder="数字で検索してください">
+			<Image src={upArrow} alt="" width={30} class="up"/>
+			<Image src={downArrow} alt="" width={30} class="hidden down"/>
+		</div>
+	</div>
+
+	<div class="main" >
+    {contents.map((list,index)=>(
+    	<div class="element" id={list.publishDate} >
+				<a href={`/magazines/${list.title}`} id="link">
+      <img src={list.cover.url} class="img" />
+      <p id="title">{list.title}</p>
+      <p id="date" data-date={list.publishDate}>{new Date(list.publishDate).toLocaleDateString()}</p>
+			</a>
+			</div>
+			
+    ))}
+	</div>
+</div>
+
+</Layout>
+
+
+
+<style>
+.all{
+  background-color: #F8FAEF;
+  height: 100%;
+}
+.search{
+	background-color: #98A786;
+	width: screen;
+	height: 60px;
+	border-bottom: 2px dashed #4C5B5C;
+}
+.searchping{
+	display: flex;
+	height: 30px;
+	position: absolute;
+	top: 15px;
+	left: 20px;
+	
+}
+#Search{
+width: 300px;
+}
+input{
+background-color: #F8FAEF;
+}
+
+.element {
+ margin-left: 30px;
+ margin-right: 30px;
+ height: 200px;
+background-size: 12px 2px;
+background-image: linear-gradient(to right, #4C5B5C, #4C5B5C 6px, transparent 6px, transparent 12px);
+background-repeat: repeat-x;
+background-position: left bottom ;
+/* visibility:collapse */
+}
+.element:hover{
+	background-color: #D8EFF4;
+}
+.img{
+  float:left;
+  margin-top: 50px;
+   width:100px; 
+   height: auto;
+}
+.content{
+  text-decoration:none;
+}
+#title{
+color: #000000;
+}
+#date{
+color: #4C5B5C;
+}
+#link{
+	display: block;
+  width: 100%;
+  height: 100%;
+}
+</style>
