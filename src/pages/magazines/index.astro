@@ -11,15 +11,19 @@ const contents=response.contents;
 var n=0;
 ---
 <script>
+
 const Searchdate=document.getElementById("Search");
-const searchTargets = document.getElementById("date");
-const datelist=searchTargets?.value;
+const element=document.getElementsByClassName("element");//変換前時刻
+const datelist=new Date(element).toLocaleDateString();
 const up=document.getElementsByClassName("up");
 const down=document.getElementsByClassName("down");
 
+
 Searchdate?.addEventListener('change',()=>{
-const date=Searchdate?.value;
-console.log(datelist);
+const data=Searchdate?.value;
+
+//elementidとdadaの一致判定
+//一致している時elementのクラスをいじる
 });
 
 
@@ -35,21 +39,17 @@ console.log(datelist);
 			<Image src={downArrow} alt="" width={30} class="hidden down"/>
 		</div>
 	</div>
-	<!--最悪の場合これを使う 
-	<iframe title="pdfjs-default-viewer" 
-      src="web/viewer.html?file=https://raw.githubusercontent.com/nitgc-densan-club/magazines/main/2024.pdf" 
-      width="1200px" 
-      height="700px">
-    </iframe> -->
+
 	<div class="main" >
     {contents.map((list,index)=>(
-    	<div class="element" id={String(n++)}>
-      <a href=`/magazines/${contents[0].title}`>
-      <img src={contents[0].cover.url} class="img" />
-      <p id="title">{contents[0].title}</p>
-      <p id="date">{new Date(contents[0].publishDate).toLocaleDateString()}</p>
+    	<div class="element" id={list.publishDate} >
+				<a href={`/magazines/${list.title}`} id="link">
+      <img src={list.cover.url} class="img" />
+      <p id="title">{list.title}</p>
+      <p id="date" data-date={list.publishDate}>{new Date(list.publishDate).toLocaleDateString()}</p>
 			</a>
 			</div>
+			
     ))}
 	</div>
 </div>
@@ -92,6 +92,7 @@ background-size: 12px 2px;
 background-image: linear-gradient(to right, #4C5B5C, #4C5B5C 6px, transparent 6px, transparent 12px);
 background-repeat: repeat-x;
 background-position: left bottom ;
+/* visibility:collapse */
 }
 .element:hover{
 	background-color: #D8EFF4;
@@ -110,5 +111,10 @@ color: #000000;
 }
 #date{
 color: #4C5B5C;
+}
+#link{
+	display: block;
+  width: 100%;
+  height: 100%;
 }
 </style>
