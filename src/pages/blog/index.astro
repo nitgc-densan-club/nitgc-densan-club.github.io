@@ -1,41 +1,53 @@
 ---
 import Layout from "../../layouts/Layout.astro";
+import { getBlog } from "../../libs/microcms";
+const response = await getBlog();
+const list = response.contents;
 ---
 
 <Layout>
+  <div class="search">
+    <img
+      src="src/assets/blog/search.png"
+      style="width: 40px; height: 40px; margin: 10px;"
+    />
+    <div class="searchBox"></div>
+  </div>
+
   <div class="bg">
-
-    <div class="flex dashed-two">
-     
-      <div class="item ">
-  
-      </div>
-      <div class="item ">
-        
-        <p>－－－について</p>
-        <p>2025/XX/YY by A</p>
-        <p>#html #test</p>
-      </div>
-
-    </div>
-　
-    <div class="flex dashed-two">
-
-      <div class="item ">
-      </div>
-      <div class="item ">
-      </div>
-
-    </div>
+    {
+      list.map((data) => (
+        <div class="underline">
+          <div class="item "></div>
+          <div class="item ">
+            <p>{data.title}</p>
+            <p>2025/XX/YY by </p>
+            <p>#</p>
+          </div>
+        </div>
+      ))
+    }
   </div>
 </Layout>
+
 <style>
-  .flex {
+  .search {
+    height: 60px;
+    background-color: #98a786;
     display: flex;
   }
-    .dashed-two {
-  border-bottom: 2px dashed #333;/*点線の色指定 */
-}
+  .searchBox{
+     height: 25px;
+     width:80%;
+     margin-top: 15px;
+     background-color: #F8FAEF;
+  }
+
+  .underline {
+    display: flex;
+    border-bottom: 2px dashed #333; /*点線の色指定 */
+  }
+
   .item {
     width: 200px;
     height: 150px;
@@ -45,5 +57,4 @@ import Layout from "../../layouts/Layout.astro";
     height: 100%;
     background-color: #f8faef; /* 背景色指定 */
   }
-
 </style>
