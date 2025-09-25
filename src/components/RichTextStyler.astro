@@ -1,0 +1,43 @@
+---
+/**
+ * CMSから取得したリッチテキストをスタイリングして表示するためのコンポーネントです。
+ * */
+
+const { containts } = Astro.props;
+---
+
+<div class="document" set:html={containts} />
+
+<style>
+  .document {
+    margin: 0;
+    padding: 60px 5%;
+
+    h1 {
+      margin-top: 72px;
+      border-bottom: 5px solid #8c9991;
+
+      font-size: 36px;
+    }
+    h2 {
+      margin-top: 54px;
+      border-bottom: 3px solid #8c9991;
+
+      font-size: 32px;
+    }
+    h3 {
+      margin-top: 54px;
+      border-bottom: 3px solid #8c9991;
+
+      font-size: 28px;
+    }
+    p {
+      font-size: 16px;
+      margin: 10px 0;
+    }
+    p > a {
+      color: #4c5b5c;
+      text-decoration: underline;
+    }
+  }
+</style>

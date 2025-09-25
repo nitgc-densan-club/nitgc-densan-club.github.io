@@ -106,17 +106,17 @@ const NewsList = response.contents;
       {
         /*一覧を生成*/
         NewsList.map((news) => (
-            <div class="news">
-              <div class="TopText">
-                <p class="NewsTitle">件名:{news.title}</p>
-                <p class="NewsDate">{news.updatedAt}</p>
-              </div>
-              <p class="NewsFrom">from:densan-club-nitgc</p>
-              <div class="dotbox" />
-
-              <div class="NewsText TextOmission" set:html={news.body} />
-              <p class="ReadMore">続きを読む</p>
+          <div class="news">
+            <div class="TopText">
+              <p class="NewsTitle">件名:{news.title}</p>
+              <p class="NewsDate">{news.updatedAt}</p>
             </div>
+            <p class="NewsFrom">from:densan-club-nitgc</p>
+            <div class="dotbox" />
+
+            <div class="NewsText TextOmission" set:html={news.body} />
+            <p class="ReadMore">続きを読む</p>
+          </div>
         ))
       }
     </div>
@@ -184,7 +184,7 @@ const NewsList = response.contents;
     text-align: left;
     font-size: 20px;
     margin: 4px 7px;
-    height:45%;
+    height: 45%;
   }
 
   .news {
