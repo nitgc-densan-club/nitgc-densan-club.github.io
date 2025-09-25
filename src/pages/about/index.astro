@@ -9,7 +9,10 @@ const response = await getAbout();
 const body = response.body;
 ---
 
-<Layout title="群馬高専 電算部 - 電算部について" window={{ title: "電算部について", icon: TextImage }}>
+<Layout
+  title="群馬高専 電算部 - 電算部について"
+  window={{ title: "電算部について", icon: TextImage }}
+>
   <RichTextStyler containts={body} />
 </Layout>
 
