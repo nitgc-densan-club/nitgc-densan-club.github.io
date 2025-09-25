@@ -11,17 +11,24 @@ const contents=response.contents;
 var n=0;
 ---
 <script>
-
 const Searchdate=document.getElementById("Search");
 const element=document.getElementsByClassName("element");//変換前時刻
-const datelist=new Date(element).toLocaleDateString();
+const datelist=Array.from(element).map(date=>new Date(date.id).toLocaleDateString());
 const up=document.getElementsByClassName("up");
 const down=document.getElementsByClassName("down");
 
 
 Searchdate?.addEventListener('change',()=>{
 const data=Searchdate?.value;
+var result=(Array.from(datelist)).filter((date)=>date.includes(data));
 
+Array.from(element).forEach(data=>{
+ 	if(result.includes(data.id)){
+		data.classList.remove("collapse");
+	}else{
+		data.classList.add("collapse");
+	}
+ })
 //elementidとdadaの一致判定
 //一致している時elementのクラスをいじる
 });
@@ -34,7 +41,7 @@ const data=Searchdate?.value;
 	<div class="search">
 		<div class="searchping">
 			<Image src={Searchicon} alt="" width={30} />
-			<input type="number"  id="Search" placeholder="数字で検索してください">
+			<input type="number"  id="Search" placeholder="年を入力してください">
 			<Image src={upArrow} alt="" width={30} class="up"/>
 			<Image src={downArrow} alt="" width={30} class="hidden down"/>
 		</div>
