@@ -18,10 +18,12 @@ const list = response.contents;
     {
       list.map((data) => (
         <div class="underline">
-          <div class="item" />
-          <div class="item">
+          <div class="item ">
+            <img src={data.eyecatch.url}/>
+          </div>
+          <div class="item ">
             <p>{data.title}</p>
-            <p>2025/XX/YY by </p>
+            <p>2025/XX/YY by</p>
             <p>#</p>
           </div>
         </div>
