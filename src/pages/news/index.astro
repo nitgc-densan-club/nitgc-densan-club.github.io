@@ -1,9 +1,14 @@
 ---
+import { deserializeActionResult } from "astro:actions";
 import Layout from "../../layouts/Layout.astro";
 import { getNews } from "../../libs/microcms";
 
 const response = await getNews();
 const NewsList = response.contents;
+
+function dateFormat(date: string){
+  return date.split("T")[0].replaceAll("-","/");
+}
 ---
 
 <script>
@@ -73,31 +78,6 @@ const NewsList = response.contents;
     }
   });
 
-  /*ニュース一覧の更新日時(updatedAt)をYYYY-MM-DDに省略*/
-  const NewsDateList = document.getElementsByClassName("NewsDate");
-
-  for (let k = 0; k <= NewsDateList.length - 1; k++) {
-    const str = NewsDateList[k]!.textContent;
-    NewsDateList[k]!.textContent =
-      str.substring(0, 4) +
-      "/" +
-      str.substring(5, 7) +
-      "/" +
-      str.substring(8, 10);
-  }
-
-  /*ニュース詳細の更新日時(updatedAt)をYYYY-MM-DDに省略*/
-  const DetailDateList = document.getElementsByClassName("DetailDate");
-
-  for (let k = 0; k <= DetailDateList.length - 1; k++) {
-    const str = DetailDateList[k]!.textContent;
-    DetailDateList[k]!.textContent =
-      str.substring(0, 4) +
-      "/" +
-      str.substring(5, 7) +
-      "/" +
-      str.substring(8, 10);
-  }
 </script>
 
 <Layout title="ニュース">
@@ -109,7 +89,7 @@ const NewsList = response.contents;
           <div class="news">
             <div class="TopText">
               <p class="NewsTitle">件名:{news.title}</p>
-              <p class="NewsDate">{news.updatedAt}</p>
+              <p class="NewsDate">{dateFormat(news.updatedAt)}</p>
             </div>
             <p class="NewsFrom">from:densan-club-nitgc</p>
             <div class="dotbox" />
@@ -134,7 +114,7 @@ const NewsList = response.contents;
         /*詳細を生成*/
         NewsList.map((detail) => (
           <div class="DetailCard" id="DetailCard" style="display: none;">
-            <p class="DetailDate">{detail.updatedAt}</p>
+            <p class="DetailDate">{dateFormat(detail.updatedAt)}</p>
             <p class="DetailTitle">件名:{detail.title}</p>
             <p class="DetailFrom">from:densan-club-nitgc</p>
             <div class="dotbox" />
