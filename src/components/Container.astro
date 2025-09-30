@@ -80,4 +80,29 @@ const { width = "100px", height = "100px" } = Astro.props;
     flex-grow: 1;
     overflow: auto;
   }
+
+  /* スクロールバー */
+  .contents-area::-webkit-scrollbar{
+    width: auto;
+    background-color: #fff;
+  }
+
+  .contents-area::-webkit-scrollbar-track{
+    margin-top: 10px;
+    margin-bottom: 14px;
+  }
+
+  .contents-area::-webkit-scrollbar-thumb{
+    background-color: #747474;
+    border-right: 4px solid transparent;
+    border-left: 4px solid transparent;
+    background-clip: padding-box;
+  }
+
+  /* Firefox用 */
+  @-moz-document url-prefix(){
+  .contents-area{
+    scrollbar-width: auto;
+    scrollbar-color: #747474 #fff;
+  }}
 </style>
