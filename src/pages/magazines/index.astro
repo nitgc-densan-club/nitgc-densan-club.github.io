@@ -11,7 +11,7 @@ const contents=response.contents;
 ---
 <script>
 
-const Searchdate=document.getElementById("Search");
+const Searchdate=(document.getElementById("Search"))as HTMLInputElement;
 const element=document.getElementsByClassName("element");//変換前時刻
 const datelist=Array.from(element).map(el => el.id);
 const up=document.getElementById("up");
@@ -54,17 +54,19 @@ function comp1(a:number, b:number) {
 function comp2(a:number, b:number) {
   return b - a;
 }
-function insert(list) {
+
+function insert(list:number[]) {
 	var insertObj;
 	var insertPositionObj;
 	const top=document.getElementById("main");
-	top?.insertBefore(document.getElementById(list[0])!, null);
+	top?.insertBefore(document.getElementById(String(list[0]))!, null);
 	for(var i=1;i<list.length;i++){
-	insertObj=document.getElementById(list[i]);
-	insertPositionObj=document.getElementById(list[i-1]);
+	insertObj=document.getElementById(String(list[i]));
+	insertPositionObj=document.getElementById(String(list[i-1]));
   top?.insertBefore(insertObj!, insertPositionObj);
 	}
 }
+
 </script>
 <Layout>
 <div class="all">
@@ -81,7 +83,7 @@ function insert(list) {
 
 	<div id="main" >
     {contents.map((list,index)=>(
-    	<div class="element" id={new Date(list.publishDate).getFullYear()} >
+    	<div class="element" id={String(new Date(list.publishDate).getFullYear())} >
 				<a href={`/magazines/${list.title}`} id="link">
 			<div class="flex">
       <img src={list.cover.url} class="img" />
@@ -167,5 +169,8 @@ color: #4C5B5C;
   width: 100%;
   height: 100%;
 	display: inline-block;
+}
+#chenge{
+	margin-left: 5px;
 }
 </style>
