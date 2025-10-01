@@ -1,9 +1,8 @@
 ---
-import { deserializeActionResult } from "astro:actions";
 import Layout from "../../layouts/Layout.astro";
 import { getNews } from "../../libs/microcms";
-import BackArrow from "../../assets/component/down.png";
 import mailpicture from "../../assets/component/mail.png";
+import { removeHtmlTag } from "../../libs/removeHtmlTag.ts";
 
 const response = await getNews();
 const NewsList = response.contents;
@@ -94,8 +93,9 @@ function dateFormat(date: string){
             </div>
             <p class="NewsFrom">from:densan-club-nitgc</p>
             <div class="dotbox" />
-
-            <div class="NewsText TextOmission" set:html={news.body} />
+            <div class="TextOmission">
+              <p class="NewsText">{removeHtmlTag(news.body)}</p>
+              </div>
             <p class="ReadMore">続きを読む</p>
           </div>
         ))
@@ -105,8 +105,7 @@ function dateFormat(date: string){
     <div id="detail" class="detail" style="display: none;">
       <div class="FixedHeader">
           <div class="back" id="back">
-            <div class="arrow" id="arrow"></div>
-            <p style="font-size: 20px;" class="BackText">戻る</p>
+            <p style="font-size: 20px;" class="BackText"><b style="margin-right:5px;">＜</b>戻る</p>
             </div>
         </button>
       </div>
@@ -167,7 +166,6 @@ function dateFormat(date: string){
     text-align: left;
     font-size: 20px;
     margin: 4px 7px;
-    height: 45%;
   }
 
   /*件名(title)と日時(date)の並び方*/
@@ -179,6 +177,7 @@ function dateFormat(date: string){
 
   /*文章が長い場合に省略する*/
   .TextOmission {
+    height:90px;
     overflow: hidden;
     line-height: 1.5rem;
     display: -webkit-box;
@@ -187,8 +186,9 @@ function dateFormat(date: string){
   }
 
   .ReadMore {
-    text-align: right;
-    vertical-align: text-bottom;
+    display:flex;
+    justify-content: flex-end;
+    align-items: flex-end;
   }
 
   /*detailのみに適用するCSS*/
@@ -269,18 +269,5 @@ function dateFormat(date: string){
     background-size: 8px 2px;
     background-repeat: repeat-x;
     background-position: left bottom;
-  }
-
-  /*戻るボタン用の矢印*/
-  .arrow {
-    width: 25px;
-    height: 25px;
-    margin: 0px;
-    padding: 0px;
-    border: none;
-    cursor: pointer;
-    border: 3px solid;
-    border-color: transparent transparent #565656 #565656;
-    transform: translate(10px,8px) rotate(45deg);
   }
 </style>
