@@ -4,7 +4,7 @@ import { Image } from "astro:assets";
 import crossMark from "../assets/component/cross_mark.png";
 import type { WindowType } from "../layouts/types";
 interface Props {
-  window: WindowType;
+  window : WindowType;
 }
 
 const { window } = Astro.props;
@@ -14,7 +14,7 @@ const { window } = Astro.props;
   <Container width="100%" height="100%">
     <div class="title-bar" slot="title-bar">
       <div class="title-bar-left">
-        <Image src={window.icon} alt="画像" width={36} />
+        <Image src={window.icon} alt="画像" width={30} />
         <span>{window.title}</span>
       </div>
       <div class="title-bar-right">
@@ -56,7 +56,7 @@ const { window } = Astro.props;
   }
 
   .title-bar-left {
-    gap: 12px;
+    gap: 8px;
   }
 
   .title-bar-left,

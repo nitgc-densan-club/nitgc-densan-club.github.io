@@ -1,14 +1,24 @@
 ---
 import Footer from "../components/Footer.astro";
 import Window from "../components/Window.astro";
-import type { WindowType } from "./types";
+import text from '../assets/component/text.png';
+import mail from '../assets/component/ml.png';
+import file from '../assets/component/file.png';
 
-interface Props {
-  window?: WindowType;
-  title?: string;
+const pagePath = Astro.url.pathname;
+let data;
+if (pagePath === "/about/") {
+  data = {title:"電算部について", icon:text};
 }
-
-const { title, window } = Astro.props;
+else if (pagePath === "/news/") {
+  data = {title:"ニュース", icon:mail}
+}
+else if (pagePath === "/magazines/") {
+  data = {title:"部誌", icon:text}
+}
+else if (pagePath === "/blog/") {
+  data = {title:"ブログ", icon:file}
+}
 ---
 
 <!doctype html>
@@ -18,7 +28,7 @@ const { title, window } = Astro.props;
     <meta name="viewport" content="width=device-width" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="generator" content={Astro.generator} />
-    <title>{title}</title>
+    <title>{data? data.title : "トップ"}</title>
 
     <!-- Font設定 -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -31,8 +41,8 @@ const { title, window } = Astro.props;
   <body>
     <main>
       {
-        window ? (
-          <Window window={window}>
+        data ? (
+          <Window window={data}>
             <slot />
           </Window>
         ) : (
