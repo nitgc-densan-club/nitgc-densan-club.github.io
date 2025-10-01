@@ -43,6 +43,8 @@ const url = item?.url;
       const container = document.getElementById("container");
       const pdfPath = container.dataset.url;
 
+      pdfjsLib.GlobalWorkerOptions.workerSrc = "/build/pdf.worker.mjs";
+
       var canvas = document.getElementById("the-canvas");
       var context = canvas.getContext("2d");
       var pdfDoc = null,
