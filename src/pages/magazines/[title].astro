@@ -21,10 +21,10 @@ const url = item?.url;
 <Layout>
   <div id="container" data-url={url}></div>
   <div class="custom-main">
-    <div class="pdfsize">
       <a href="./" class="back">
         <Image src={Arrow} alt="" width={30} />
       </a>
+    <div class="pdfsize">
       <canvas id="the-canvas"></canvas>
     </div>
     <div class="prevnext">
@@ -153,4 +153,8 @@ const url = item?.url;
     display: inline-block;
     margin: 2px;
   }
+  .pdfsize{
+    width: 100%;
+    height: 80%;
+    }
 </style>

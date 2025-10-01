@@ -8,21 +8,21 @@ import { getMagazine } from '../../libs/microcms';
 
 const response=await getMagazine();
 const contents=response.contents;
-var n=0;
 ---
 <script>
+
 const Searchdate=document.getElementById("Search");
 const element=document.getElementsByClassName("element");//変換前時刻
-const datelist=Array.from(element).map(date=>new Date(date.id).toLocaleDateString());
-const up=document.getElementsByClassName("up");
-const down=document.getElementsByClassName("down");
-
+const datelist=Array.from(element).map(el => el.id);
+const up=document.getElementById("up");
+const down=document.getElementById("down");
+const Onclick=document.getElementById("chenge");
 
 Searchdate?.addEventListener('change',()=>{
 const data=Searchdate?.value;
-var result=(Array.from(datelist)).filter((date)=>date.includes(data));
+var result=datelist.filter((date)=>date.includes(data));
 Array.from(element).forEach(data=>{
- 	if(result.includes(new Date(data.id).toLocaleDateString())){
+ 	if(result.includes(data.id)){
 		data.classList.remove("hidden");
 	}else{
 		data.classList.add("hidden");
@@ -31,6 +31,40 @@ Array.from(element).forEach(data=>{
 });
 
 
+
+Onclick?.addEventListener('click',()=>{
+ var newlist=Array.from(element).map(date=>new Date(date.id).getFullYear());;
+ 	if(up?.classList.contains("hidden")){
+		up.classList.remove("hidden");
+		down?.classList.add("hidden");
+		newlist.sort(comp2);
+		insert(newlist);
+	}else if(down?.classList.contains("hidden")){
+		newlist.sort(comp1);
+		up?.classList.add("hidden");
+		down?.classList.remove("hidden");
+		insert(newlist);
+
+	}
+});
+
+function comp1(a:number, b:number) {
+  return a - b;
+}
+function comp2(a:number, b:number) {
+  return b - a;
+}
+function insert(list) {
+	var insertObj;
+	var insertPositionObj;
+	const top=document.getElementById("main");
+	top?.insertBefore(document.getElementById(list[0])!, null);
+	for(var i=1;i<list.length;i++){
+	insertObj=document.getElementById(list[i]);
+	insertPositionObj=document.getElementById(list[i-1]);
+  top?.insertBefore(insertObj!, insertPositionObj);
+	}
+}
 </script>
 <Layout>
 <div class="all">
@@ -38,14 +72,16 @@ Array.from(element).forEach(data=>{
 		<div class="searchping">
 			<Image src={Searchicon} alt="" width={30} />
 			<input type="number"  id="Search" placeholder="年を入力してください">
-			<Image src={upArrow} alt="" width={30} class="up"/>
-			<Image src={downArrow} alt="" width={30} class="hidden down"/>
+			<div id="chenge">
+			<Image src={upArrow} alt="" width={30} class="" id="up"/>
+			<Image src={downArrow} alt="" width={30} class="hidden"id="down"/>
+			 </div>
 		</div>
 	</div>
 
-	<div class="main" >
+	<div id="main" >
     {contents.map((list,index)=>(
-    	<div class="element" id={list.publishDate} >
+    	<div class="element" id={new Date(list.publishDate).getFullYear()} >
 				<a href={`/magazines/${list.title}`} id="link">
 			<div class="flex">
       <img src={list.cover.url} class="img" />
@@ -80,11 +116,12 @@ Array.from(element).forEach(data=>{
 	height: 30px;
 	position: absolute;
 	top: 15px;
-	left: 20px;
+	left: 10px;
 	
 }
 #Search{
 width: 300px;
+margin-left: 10px;
 }
 input{
 background-color: #F8FAEF;
