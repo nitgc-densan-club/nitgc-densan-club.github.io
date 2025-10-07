@@ -1,36 +1,93 @@
 ---
 import Layout from "../../layouts/Layout.astro";
-import { getBlog } from "../../libs/microcms";
+import { getBlog,getBlogDetail  } from "../../libs/microcms";
 const response = await getBlog();
 const list = response.contents;
----
 
+
+---
+<script>
+  const Searchdate = document.getElementById("Search")as HTMLInputElement;
+    Searchdate?.addEventListener("change", () => {
+    const data = Searchdate?.value ;
+
+
+    
+  });
+</script>
 <Layout>
   <div class="search">
     <img
       src="src/assets/blog/search.png"
       style="width: 40px; height: 40px; margin: 10px;"
     />
-    <div class="searchBox"></div>
+    <div class="searchBox">
+        <input
+        id="Search"
+        type="text"
+        placeholder="タイトルで検索..."
+        style="width: 100%; height: 100%; border: none; padding: 5px;"
+      />
+  
+
+    </div>
   </div>
 
-  <div class="bg">
-    {
-      list.map((data) => (
-        <div class="underline">
-          <div class="item ">
-            <img src={data.eyecatch.url}/>
-          </div>
-          <div class="item ">
-            <p>{data.title}</p>
-            <p>2025/XX/YY by</p>
-            <p>#</p>
-          </div>
+  <div  id="blogList" class="bg">
+   {
+  list.map((data) => {
+    const date = new Date(data.updatedAt as string);
+    const formattedDate = date.toLocaleDateString('ja-JP', {
+      year: 'numeric',
+      month: '2-digit',
+      day: '2-digit',
+    });
+
+    return (
+      <div class="underline" >
+        
+        <div class="item">
+          <img src={data.eyecatch.url} class="eyecatch" />
         </div>
-      ))
-    }
+        <div class="item">
+         <a href={`/blog/${data.slug}`} id="link"> <p>{data.title}</p> </a>
+          <p>{formattedDate}</p>
+        </div>
+      </div>
+    );
+  })
+}
+
   </div>
 </Layout>
+ <script>
+    // クライアント側で動くようにする
+    document.addEventListener("DOMContentLoaded", () => {
+      const Searchdate = document.getElementById("Search") as HTMLInputElement;
+      const blogList = document.getElementById("blogList");
+
+      // 初期リストを保持
+      const originalList = [...blogList!.children];
+
+      Searchdate?.addEventListener("input", () => {
+        const keyword = Searchdate.value.trim().toLowerCase();
+
+        // 一旦リストをクリア
+        blogList!.innerHTML = "";
+
+        // フィルタリング
+        const filtered = originalList.filter((el) => {
+          const title = el.querySelector("p")?.textContent?.toLowerCase() ?? "";
+          return title.includes(keyword);
+        });
+
+        // 一致する記事を再描画
+        filtered.forEach((el) => blogList!.appendChild(el));
+      });
+    });
+  </script>
+</Layout>
+
 
 <style>
   .search {
@@ -50,11 +107,16 @@ const list = response.contents;
     border-bottom: 2px dashed #333; /*点線の色指定 */
   }
 
-  .item {
+    .item{
     width: 200px;
     height: 150px;
-  }
 
+  }
+ .eyecatch{
+   width: 90%;
+   height: 90%;
+   margin:auto;
+ }
   .bg {
     height: 100%;
     background-color: #f8faef; /* 背景色指定 */
