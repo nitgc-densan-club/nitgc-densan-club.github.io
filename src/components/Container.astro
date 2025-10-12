@@ -82,17 +82,17 @@ const { width = "100px", height = "100px" } = Astro.props;
   }
 
   /* スクロールバー */
-  .contents-area::-webkit-scrollbar{
+  .contents-area::-webkit-scrollbar {
     width: auto;
     background-color: #fff;
   }
 
-  .contents-area::-webkit-scrollbar-track{
+  .contents-area::-webkit-scrollbar-track {
     margin-top: 10px;
     margin-bottom: 14px;
   }
 
-  .contents-area::-webkit-scrollbar-thumb{
+  .contents-area::-webkit-scrollbar-thumb {
     background-color: #747474;
     border-right: 4px solid transparent;
     border-left: 4px solid transparent;
@@ -100,9 +100,10 @@ const { width = "100px", height = "100px" } = Astro.props;
   }
 
   /* Firefox用 */
-  @-moz-document url-prefix(){
-  .contents-area{
-    scrollbar-width: auto;
-    scrollbar-color: #747474 #fff;
-  }}
+  @-moz-document url-prefix() {
+    .contents-area {
+      scrollbar-width: auto;
+      scrollbar-color: #747474 #fff;
+    }
+  }
 </style>

@@ -1,23 +1,20 @@
 ---
-import file from '../assets/component/file.png';
-import mail from '../assets/component/mail.png';
-import text from '../assets/component/text.png';
+import file from "../assets/component/file.png";
+import mail from "../assets/component/mail.png";
+import text from "../assets/component/text.png";
 import Footer from "../components/Footer.astro";
 import Window from "../components/Window.astro";
 
 const pagePath = Astro.url.pathname;
 let data;
 if (pagePath.startsWith("/about/")) {
-  data = {title:"電算部について", icon:text};
-}
-else if (pagePath.startsWith("/news/")) {
-  data = {title:"ニュース", icon:mail}
-}
-else if (pagePath.startsWith("/magazines/")) {
-  data = {title:"部誌", icon:text}
-}
-else if (pagePath.startsWith("/blog/")) {
-  data = {title:"ブログ", icon:file}
+  data = { title: "電算部について", icon: text };
+} else if (pagePath.startsWith("/news/")) {
+  data = { title: "ニュース", icon: mail };
+} else if (pagePath.startsWith("/magazines/")) {
+  data = { title: "部誌", icon: text };
+} else if (pagePath.startsWith("/blog/")) {
+  data = { title: "ブログ", icon: file };
 }
 ---
 
