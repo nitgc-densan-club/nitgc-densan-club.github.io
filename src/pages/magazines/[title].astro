@@ -21,11 +21,11 @@ const url = item?.url;
 <Layout>
   <div id="container" data-url={url}></div>
   <div class="custom-main">
-    <div class="pdfsize">
       <a href="./" class="back">
         <Image src={Arrow} alt="" width={30} />
       </a>
-      <canvas id="the-canvas"></canvas>
+    <div class="pdfsize">
+      <canvas id="the-canvas" ></canvas>
     </div>
     <div class="prevnext">
       <button id="prev" type="button">Back</button>
@@ -39,23 +39,30 @@ const url = item?.url;
   </div>
 
   <script id="script" type="module">
+
     (async () => {
       const container = document.getElementById("container");
       const pdfPath = container.dataset.url;
 
+      pdfjsLib.GlobalWorkerOptions.workerSrc = "/build/pdf.worker.mjs";
+
       var canvas = document.getElementById("the-canvas");
       var context = canvas.getContext("2d");
+   //  
       var pdfDoc = null,
         pageNum = 1,
         pageRendering = false,
-        pageNumPending = null,
-        scale = 0.75;
-
+        pageNumPending = null
+        
       function renderPage(num) {
         pageRendering = true;
         // Using promise to fetch the page
         pdfDoc.getPage(num).then(function (page) {
-          var viewport = page.getViewport({ scale: scale });
+          var unscaledViewport = page.getViewport({scale:1});
+          //var scale=canvas.width / unscaledViewport.width;
+          var scale=Math.min((window.outerWidth / unscaledViewport.width),(window.outerHeight/ unscaledViewport.height));
+          var viewport = page.getViewport({ scale:scale });
+          
           // Support HiDPI-screens.
           var outputScale = window.devicePixelRatio || 1;
 
@@ -69,10 +76,10 @@ const url = item?.url;
             viewport: viewport,
           };
           var renderTask = page.render(renderContext);
-          canvas.width = Math.floor(viewport.width * outputScale);
+         canvas.width = Math.floor(viewport.width * outputScale);
           canvas.height = Math.floor(viewport.height * outputScale);
-          canvas.style.width = Math.floor(viewport.width) + "px";
           canvas.style.height = Math.floor(viewport.height) + "px";
+          canvas.style.width = Math.floor(viewport.width) + "px";
           // Wait for rendering to finish
           renderTask.promise.then(function () {
             pageRendering = false;
@@ -128,6 +135,9 @@ const url = item?.url;
 </Layout>
 
 <style>
+  #the-canvas{
+    width: fit-content;
+  }
   .pdfsize {
     width: auto;
     overflow: auto;
@@ -151,4 +161,8 @@ const url = item?.url;
     display: inline-block;
     margin: 2px;
   }
+  .pdfsize{
+    width: 100%;
+    height: 80%;
+    }
 </style>
