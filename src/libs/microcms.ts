@@ -1,5 +1,5 @@
 import { createClient, type MicroCMSQueries } from "microcms-js-sdk";
-import type { About, Magazine, Blog, News, Tag, Team } from "./microcms-types";
+import type { About, Blog, Magazine, News, Tag, Team } from "./microcms-types";
 
 const mainClient = createClient({
   serviceDomain: import.meta.env.MICROCMS_MAIN_SERVICE,
@@ -13,7 +13,10 @@ const subClient = createClient({
 
 /* --- News --- */
 export const getNews = async (queries?: MicroCMSQueries) =>
-  await mainClient.getList<News>({ endpoint: "news", queries });
+  await mainClient.getList<News>({
+    endpoint: "news",
+    queries: { limit: 100, ...queries },
+  });
 
 export const getNewsDetail = async (
   contentId: string,
@@ -27,7 +30,10 @@ export const getNewsDetail = async (
 
 /* --- Blog --- */
 export const getBlog = async (queries?: MicroCMSQueries) =>
-  await mainClient.getList<Blog>({ endpoint: "blogs", queries });
+  await mainClient.getList<Blog>({
+    endpoint: "blogs",
+    queries: { limit: 100, ...queries },
+  });
 
 export const getBlogDetail = async (
   contentId: string,
@@ -41,7 +47,10 @@ export const getBlogDetail = async (
 
 /* --- Tag --- */
 export const getTag = async (queries?: MicroCMSQueries) =>
-  await mainClient.getList<Tag>({ endpoint: "tags", queries });
+  await mainClient.getList<Tag>({
+    endpoint: "tags",
+    queries: { limit: 100, ...queries },
+  });
 
 export const getTagDetail = async (
   contentId: string,
@@ -55,7 +64,10 @@ export const getTagDetail = async (
 
 /* --- Team --- */
 export const getTeam = async (queries?: MicroCMSQueries) =>
-  await mainClient.getList<Team>({ endpoint: "teams", queries });
+  await mainClient.getList<Team>({
+    endpoint: "teams",
+    queries: { limit: 100, ...queries },
+  });
 
 export const getTeamDetail = async (
   contentId: string,
@@ -69,7 +81,10 @@ export const getTeamDetail = async (
 
 /* --- Magazine --- */
 export const getMagazine = async (queries?: MicroCMSQueries) =>
-  await subClient.getList<Magazine>({ endpoint: "magazines", queries });
+  await subClient.getList<Magazine>({
+    endpoint: "magazines",
+    queries: { limit: 100, ...queries },
+  });
 
 export const getMagazineDetail = async (
   contentId: string,
