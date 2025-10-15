@@ -2,81 +2,76 @@
 import Layout from "../../layouts/Layout.astro";
 import { getBlog, getBlogDetail } from "../../libs/microcms";
 
-export async function  getStaticPaths (){
+export async function getStaticPaths() {
   const response = await getBlog();
   const contents = response.contents;
   return contents.map((content) => ({
     params: { slug: content.slug },
     props: {
-      id: content.id
+      id: content.id,
     },
   }));
-  }
+}
 
 const { slug } = Astro.params;
-const {id} = Astro.props;
-const blog =await getBlogDetail(id);
+const { id } = Astro.props;
+const blog = await getBlogDetail(id);
 const date = new Date(blog.updatedAt as string);
-const formatted = date.toLocaleDateString('ja-JP');
+const formatted = date.toLocaleDateString("ja-JP");
 ---
-<script>
 
-
-</script>
+<script></script>
 <Layout>
   <div class="bg">
-    <a href={`/blog`} id="link" >
-    <div>
-      <p style="font-size: 20px;"><b style="margin-right:5px;">＜</b>戻る</p>
-    </div>
+    <a href={`/blog`} id="link">
+      <div>
+        <p style="font-size: 20px;"><b style="margin-right:5px;">＜</b>戻る</p>
+      </div>
     </a>
-    <div >
-     <h1 class="title">{blog.title}</h1>
+    <div>
+      <h1 class="title">{blog.title}</h1>
       <time datetime={blog.updatedAt}>{formatted}</time>
       <img src={blog.eyecatch.url} class="eyecatch" />
-     <div set:html={blog.body} ></div>
-    
-      </div>
-     
+      <div set:html={blog.body} />
+    </div>
   </div>
 </Layout>
 
 <style>
-   .title {
-      border-bottom: 5px solid #8c9991;
+  .title {
+    border-bottom: 5px solid #8c9991;
 
-      font-size: 36px;
-    }
-    .bg {
-     height: 100%;
-     width:100%;
-     margin:auto;
+    font-size: 36px;
+  }
+  .bg {
+    height: 100%;
+    width: 100%;
+    margin: auto;
     overflow-y: auto;
     background-color: #f8faef; /* 背景色指定 */
   }
-   .eyecatch{
-    width:100%;
-    height:40%;
-    padding-top:20px;
-    padding-bottom:20px;
- }
-  
-  </style>
-  <style is:global>
-    h1{
-      font-size: 24px;
-      padding-top:16px;
-    }
-    h2{
-      font-size:20px;
-      padding-top:16px;
-    }
-    h3{
-      font-size:16px;
-      padding-top:16px;
-    }
-    p{
-      font-size:16px;
-      padding:10px;
-    }
-  </style>
+  .eyecatch {
+    width: 100%;
+    height: 40%;
+    padding-top: 20px;
+    padding-bottom: 20px;
+  }
+</style>
+<style is:global>
+  h1 {
+    font-size: 24px;
+    padding-top: 16px;
+  }
+  h2 {
+    font-size: 20px;
+    padding-top: 16px;
+  }
+  h3 {
+    font-size: 16px;
+    padding-top: 16px;
+  }
+  p {
+    font-size: 16px;
+    padding: 10px;
+  }
+</style>
