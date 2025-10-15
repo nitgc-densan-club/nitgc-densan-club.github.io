@@ -16,7 +16,6 @@ export async function  getStaticPaths (){
 const { slug } = Astro.params;
 const {id} = Astro.props;
 const blog =await getBlogDetail(id);
-console.log(blog);
 const date = new Date(blog.updatedAt as string);
 const formatted = date.toLocaleDateString('ja-JP');
 ---
@@ -26,6 +25,11 @@ const formatted = date.toLocaleDateString('ja-JP');
 </script>
 <Layout>
   <div class="bg">
+    <a href={`/blog`} id="link" >
+    <div>
+      <p style="font-size: 20px;"><b style="margin-right:5px;">＜</b>戻る</p>
+    </div>
+    </a>
     <div >
      <h1 class="title">{blog.title}</h1>
       <time datetime={blog.updatedAt}>{formatted}</time>
@@ -53,7 +57,26 @@ const formatted = date.toLocaleDateString('ja-JP');
    .eyecatch{
     width:100%;
     height:40%;
-    margin:auto;
+    padding-top:20px;
+    padding-bottom:20px;
  }
   
+  </style>
+  <style is:global>
+    h1{
+      font-size: 24px;
+      padding-top:16px;
+    }
+    h2{
+      font-size:20px;
+      padding-top:16px;
+    }
+    h3{
+      font-size:16px;
+      padding-top:16px;
+    }
+    p{
+      font-size:16px;
+      padding:10px;
+    }
   </style>
