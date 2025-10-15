@@ -2,20 +2,14 @@
 import Layout from "../../layouts/Layout.astro";
 import { Image } from "astro:assets";
 import Searchicon from "../../assets/blog/search.png";
-import { getBlog, getBlogDetail } from "../../libs/microcms";
+import { getBlog } from "../../libs/microcms";
 const response = await getBlog();
 const list = response.contents;
 ---
 
-<script>
-  const Searchdate = document.getElementById("Search") as HTMLInputElement;
-  Searchdate?.addEventListener("change", () => {
-    const data = Searchdate?.value;
-  });
-</script>
 <Layout>
   <div class="search">
-    <Image src={Searchicon} alt="" width="50" height="50" />
+    <Image src={Searchicon} alt="" width="30" />
     <div class="searchBox">
       <input
         id="Search"
@@ -38,16 +32,13 @@ const list = response.contents;
 
         return (
           <div class="underline">
+            <a href={`/blog/${data.slug}`} class="link" />
             <div class="picture">
-              <a href={`/blog/${data.slug}`} id="link">
-                <img src={data.eyecatch.url} class="eyecatch" />
-              </a>
+              <img src={data.eyecatch.url} class="eyecatch" />
             </div>
             <div class="title">
-              <a href={`/blog/${data.slug}`} id="link">
-                <p>{data.title}</p>
-                <p>{formattedDate}</p>
-              </a>
+              <p>{data.title}</p>
+              <p>{formattedDate}</p>
             </div>
           </div>
         );
@@ -55,6 +46,7 @@ const list = response.contents;
     }
   </div>
 </Layout>
+
 <script>
   // クライアント側で動くようにする
   document.addEventListener("DOMContentLoaded", () => {
@@ -84,57 +76,56 @@ const list = response.contents;
 
 <style>
   .search {
+    position: sticky;
+    top: 0;
+    z-index: 999;
+
     height: 60px;
     background-color: #98a786;
     display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
   }
+
   .searchBox {
     height: 25px;
     width: 80%;
-    margin-top: 15px;
     background-color: #f8faef;
   }
 
+  .bg {
+    /* height: 100%; */
+    background-color: #f8faef; /* 背景色指定 */
+  }
+
   .underline {
+    position: relative;
     display: flex;
+    gap: 8px;
+    padding: 8px;
     border-bottom: 2px dashed #333; /*点線の色指定 */
-    gap: 2%;
+  }
+
+  .link {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
   }
 
   .picture {
-    width: 200px;
-    height: 150px;
-    display: flex;
     align-items: center;
-    position: relative;
-    flex-grow: 2;
+    flex: 2;
   }
-  .picture a {
-    position: absolute;
-    top: 0;
-    left: 0;
-    height: 100%;
-    width: 100%;
-  }
-  .title {
-    width: 200px;
-    height: 150px;
-    position: relative;
-    flex-grow: 3;
-  }
-  .title a {
-    position: absolute;
-    top: 0;
-    left: 0;
-    height: 100%;
-    width: 100%;
-  }
+
   .eyecatch {
-    width: 90%;
-    height: 90%;
+    width: 100%;
+    /* width: 0; */
   }
-  .bg {
-    height: 100%;
-    background-color: #f8faef; /* 背景色指定 */
+
+  .title {
+    flex: 3;
   }
 </style>
