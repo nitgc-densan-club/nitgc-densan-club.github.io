@@ -109,20 +109,20 @@ function dateFormat(date: string) {
         </p>
       </div>
     </div>
+    <div class="BackBlank"></div>
+    {
+      /*詳細を生成*/
+      NewsList.map((detail) => (
+        <div class="DetailCard" id="DetailCard" style="display: none;">
+          <p class="DetailDate">{dateFormat(detail.updatedAt)}</p>
+          <p class="DetailTitle">件名:{detail.title}</p>
+          <p class="DetailFrom">from:densan-club-nitgc</p>
+          <div class="dotbox" />
+          <div class="DetailText" set:html={detail.body} />
+        </div>
+      ))
+    }
   </div>
-  <div class="BackBlank"></div>
-  {
-    /*詳細を生成*/
-    NewsList.map((detail) => (
-      <div class="DetailCard" id="DetailCard" style="display: none;">
-        <p class="DetailDate">{dateFormat(detail.updatedAt)}</p>
-        <p class="DetailTitle">件名:{detail.title}</p>
-        <p class="DetailFrom">from:densan-club-nitgc</p>
-        <div class="dotbox" />
-        <div class="DetailText" set:html={detail.body} />
-      </div>
-    ))
-  }
 </Layout>
 
 <style>
