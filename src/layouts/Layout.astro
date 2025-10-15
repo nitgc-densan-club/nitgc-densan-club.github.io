@@ -1,23 +1,20 @@
 ---
+import file from "../assets/component/file.png";
+import mail from "../assets/component/mail.png";
+import text from "../assets/component/text.png";
 import Footer from "../components/Footer.astro";
 import Window from "../components/Window.astro";
-import text from '../assets/component/text.png';
-import mail from '../assets/component/mail.png';
-import file from '../assets/component/file.png';
 
 const pagePath = Astro.url.pathname;
 let data;
 if (pagePath.startsWith("/about/")) {
-  data = {title:"電算部について", icon:text};
-}
-else if (pagePath.startsWith("/news/")) {
-  data = {title:"ニュース", icon:mail}
-}
-else if (pagePath.startsWith("/magazines/")) {
-  data = {title:"部誌", icon:text}
-}
-else if (pagePath.startsWith("/blog/")) {
-  data = {title:"ブログ", icon:file}
+  data = { title: "電算部について", icon: text };
+} else if (pagePath.startsWith("/news/")) {
+  data = { title: "ニュース", icon: mail };
+} else if (pagePath.startsWith("/magazines/")) {
+  data = { title: "部誌", icon: text };
+} else if (pagePath.startsWith("/blog/")) {
+  data = { title: "ブログ", icon: file };
 }
 ---
 
@@ -26,9 +23,9 @@ else if (pagePath.startsWith("/blog/")) {
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" href="/icon.png" />
     <meta name="generator" content={Astro.generator} />
-    <title>{data? data.title : "トップ"}</title>
+    <title>{data ? `${data.title}｜群馬高専電算部` : "群馬高専電算部"}</title>
 
     <!-- Font設定 -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />

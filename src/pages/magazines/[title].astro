@@ -4,8 +4,6 @@ import { getMagazine } from "../../libs/microcms";
 import Arrow from "../../assets/magazines/leftArrow.png";
 import { Image } from "astro:assets";
 
-const response = await getMagazine();
-const contents = response.contents;
 export async function getStaticPaths() {
   const response = await getMagazine();
   const contents = response.contents;
@@ -13,19 +11,23 @@ export async function getStaticPaths() {
     params: { title: contents.title },
   }));
 }
+
 const { title } = Astro.params;
-const item = contents.find((contents) => contents.title === title);
+
+const response = await getMagazine({ filters: `title[equals]${title}` });
+const contents = response.contents;
+const item = contents[0];
 const url = item?.url;
 ---
 
 <Layout>
   <div id="container" data-url={url}></div>
   <div class="custom-main">
-      <a href="./" class="back">
-        <Image src={Arrow} alt="" width={30} />
-      </a>
+    <a href="./" class="back">
+      <Image src={Arrow} alt="" width={30} />
+    </a>
     <div class="pdfsize">
-      <canvas id="the-canvas" ></canvas>
+      <canvas id="the-canvas"></canvas>
     </div>
     <div class="prevnext">
       <button id="prev" type="button">Back</button>
@@ -39,7 +41,6 @@ const url = item?.url;
   </div>
 
   <script id="script" type="module">
-
     (async () => {
       const container = document.getElementById("container");
       const pdfPath = container.dataset.url;
@@ -48,21 +49,25 @@ const url = item?.url;
 
       var canvas = document.getElementById("the-canvas");
       var context = canvas.getContext("2d");
-   //  
+      //
       var pdfDoc = null,
         pageNum = 1,
         pageRendering = false,
-        pageNumPending = null
-        
+        pageNumPending = null;
+
       function renderPage(num) {
         pageRendering = true;
         // Using promise to fetch the page
         pdfDoc.getPage(num).then(function (page) {
-          var unscaledViewport = page.getViewport({scale:1});
+          var unscaledViewport = page.getViewport({ scale: 1 });
           //var scale=canvas.width / unscaledViewport.width;
-          var scale=Math.min((window.outerWidth / unscaledViewport.width),(window.outerHeight/ unscaledViewport.height));
-          var viewport = page.getViewport({ scale:scale });
-          
+          var custom_main = document.getElementsByClassName("custom-main")[0];
+          var scale = Math.min(
+            custom_main.clientWidth / unscaledViewport.width,
+            custom_main.clientHeight / unscaledViewport.height,
+          );
+          var viewport = page.getViewport({ scale: scale });
+
           // Support HiDPI-screens.
           var outputScale = window.devicePixelRatio || 1;
 
@@ -76,7 +81,7 @@ const url = item?.url;
             viewport: viewport,
           };
           var renderTask = page.render(renderContext);
-         canvas.width = Math.floor(viewport.width * outputScale);
+          canvas.width = Math.floor(viewport.width * outputScale);
           canvas.height = Math.floor(viewport.height * outputScale);
           canvas.style.height = Math.floor(viewport.height) + "px";
           canvas.style.width = Math.floor(viewport.width) + "px";
@@ -135,7 +140,7 @@ const url = item?.url;
 </Layout>
 
 <style>
-  #the-canvas{
+  #the-canvas {
     width: fit-content;
   }
   .pdfsize {
@@ -161,8 +166,8 @@ const url = item?.url;
     display: inline-block;
     margin: 2px;
   }
-  .pdfsize{
+  .pdfsize {
     width: 100%;
     height: 80%;
-    }
+  }
 </style>
