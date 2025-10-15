@@ -1,0 +1,273 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import { getNews } from "../../libs/microcms";
+import mailpicture from "../../assets/component/mail.png";
+import { removeHtmlTag } from "../../libs/removeHtmlTag.ts";
+
+const response = await getNews();
+const NewsList = response.contents;
+
+function dateFormat(date: string) {
+  return date.split("T")[0].replaceAll("-", "/");
+}
+---
+
+<script>
+  /* 色コード一覧
+白：F8FAEF
+うす緑：CCDAB9
+緑：98A786
+暗いうす緑：8C9991
+暗い緑：4C5B5C
+
+*/
+
+  const content = document.getElementById("content");
+  const detail = document.getElementById("detail");
+  const back = document.getElementById("back");
+
+  //ニュース詳細のそれぞれに番号を付ける
+  const DetailCards = document.getElementsByClassName("DetailCard");
+
+  for (let k = 0; k <= DetailCards.length - 1; k++) {
+    DetailCards[k].setAttribute("id", "hide" + k);
+  }
+
+  /*一覧のどれかが押された際に一覧をすべて非表示にし(一覧をまとめているdivが非表示になる)押された一覧に対応する詳細を表示*/
+  let ContentList = document.getElementsByClassName("news");
+
+  for (let k = 0; k <= ContentList.length - 1; k++) {
+    ContentList[k].addEventListener("click", () => {
+      /*一覧非表示用の処理*/
+      if (content!.style.display === "block") {
+        content!.style.display = "none";
+      }
+
+      if (detail!.style.display === "none" || detail!.style.display === "") {
+        detail!.style.display = "block";
+      }
+
+      /*詳細表示用の処理*/
+      const SelectedDetailContent = document.getElementById("hide" + k);
+
+      if (SelectedDetailContent!.style.display === "none") {
+        SelectedDetailContent!.style.display = "block";
+      }
+    });
+  }
+
+  /*戻るボタンが押された際に詳細を非表示にし
+  一覧を全て表示(一覧をまとめているdivが表示になる)*/
+
+  back!.addEventListener("click", () => {
+    for (let k = 0; k <= DetailCards.length - 1; k++) {
+      const DetailContent = document.getElementById("hide" + k);
+
+      if (DetailContent!.style.display === "block") {
+        DetailContent!.style.display = "none";
+      }
+    }
+
+    /*詳細非表示用の処理*/
+    if (detail!.style.display === "block") {
+      detail!.style.display = "none";
+    }
+
+    /*一覧表示用の処理*/
+    if (content!.style.display === "none") {
+      content!.style.display = "block";
+    }
+  });
+</script>
+
+<Layout title="ニュース" window={{ title: "ニュース", icon: mailpicture }}>
+  <div id="content" class="content" style="display:block;">
+    {
+      /*一覧を生成*/
+      NewsList.map((news) => (
+        <div class="news">
+          <div class="TopText">
+            <p class="NewsTitle">件名:{news.title}</p>
+            <p class="NewsDate">{dateFormat(news.updatedAt)}</p>
+          </div>
+          <p class="NewsFrom">from:densan-club-nitgc</p>
+          <div class="dotbox" />
+          <div class="TextOmission">
+            <p class="NewsText">{removeHtmlTag(news.body)}</p>
+          </div>
+          <p class="ReadMore">続きを読む</p>
+        </div>
+      ))
+    }
+  </div>
+
+  <div id="detail" class="detail" style="display: none;">
+    <div class="FixedHeader">
+      <div class="back" id="back">
+        <p style="font-size: 20px;" class="BackText">
+          <b style="margin-right:5px;">＜</b>戻る
+        </p>
+      </div>
+    </div>
+    <div class="BackBlank"></div>
+    {
+      /*詳細を生成*/
+      NewsList.map((detail) => (
+        <div class="DetailCard" id="DetailCard" style="display: none;">
+          <p class="DetailDate">{dateFormat(detail.updatedAt)}</p>
+          <p class="DetailTitle">件名:{detail.title}</p>
+          <p class="DetailFrom">from:densan-club-nitgc</p>
+          <div class="dotbox" />
+          <div class="DetailText" set:html={detail.body} />
+        </div>
+      ))
+    }
+  </div>
+</Layout>
+
+<style>
+  /*文字関係(一覧と詳細で形式が変わらないため共通)*/
+
+  p {
+    margin: 4px 7px;
+  }
+
+  /*newsのみに適用するCSS*/
+
+  .news {
+    height: 200px;
+    width: 100%;
+    background: #f8faef;
+    border: thin #000 solid;
+  }
+
+  /*件名*/
+  .NewsTitle {
+    font-size: 16px;
+    text-align: left;
+  }
+
+  /*日時*/
+  .NewsDate {
+    font-size: 16px;
+    font-weight: bold;
+    text-align: right;
+  }
+
+  /*送信元*/
+  .NewsFrom {
+    font-size: 15px;
+    font-weight: bold;
+    text-align: left;
+  }
+
+  /*本文*/
+  .NewsText {
+    text-align: left;
+    font-size: 20px;
+    margin: 4px 7px;
+  }
+
+  /*件名(title)と日時(date)の並び方*/
+  .TopText {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+  }
+
+  /*文章が長い場合に省略する*/
+  .TextOmission {
+    height: 90px;
+    overflow: hidden;
+    line-height: 1.5rem;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 5;
+  }
+
+  .ReadMore {
+    display: flex;
+    justify-content: flex-end;
+    align-items: flex-end;
+  }
+
+  /*detailのみに適用するCSS*/
+
+  .detail {
+    background-color: #f8faef;
+    height: 100%;
+  }
+
+  /*上側固定(戻るボタンなどが含まれる)*/
+  .FixedHeader {
+    background-color: #f8faef;
+    width: 100%;
+    height: 45px;
+
+    border-bottom: thin #000 solid;
+    position: fixed;
+  }
+
+  /*上側固定時に要素が隠れないようにするための空白*/
+  .BackBlank {
+    width: 100%;
+    height: 45px;
+  }
+
+  /*一覧ページに戻るボタン*/
+  .BackButton {
+    width: 30px;
+    height: 30px;
+    margin: 0px;
+    padding: 0px;
+    border: none;
+    cursor: pointer;
+    background: #f8faef;
+  }
+
+  /*件名*/
+  .DetailTitle {
+    font-size: 20px;
+    text-align: left;
+  }
+
+  /*日時*/
+  .DetailDate {
+    font-size: 16px;
+    font-weight: bold;
+    text-align: right;
+  }
+
+  /*送信元*/
+  .DetailFrom {
+    font-size: 17px;
+    font-weight: bold;
+    text-align: left;
+  }
+
+  /*本文*/
+  .DetailText {
+    text-align: left;
+    font-size: 20px;
+    margin: 4px 7px;
+  }
+
+  .back {
+    width: 100px;
+    height: 40px;
+    display: flex;
+    background: #f8faef;
+  }
+
+  /*図形等*/
+
+  /*点線(四角形を組み合わせて作成 サイズ変更可能)*/
+  .dotbox {
+    width: 100%;
+    height: 5px;
+    background-image: linear-gradient(to right, #333 45%, transparent 45%);
+    background-size: 8px 2px;
+    background-repeat: repeat-x;
+    background-position: left bottom;
+  }
+</style>

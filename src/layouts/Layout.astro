@@ -1,22 +1,83 @@
+---
+import file from "../assets/component/file.png";
+import mail from "../assets/component/mail.png";
+import text from "../assets/component/text.png";
+import Footer from "../components/Footer.astro";
+import Window from "../components/Window.astro";
+
+const pagePath = Astro.url.pathname;
+let data;
+if (pagePath.startsWith("/about/")) {
+  data = { title: "電算部について", icon: text };
+} else if (pagePath.startsWith("/news/")) {
+  data = { title: "ニュース", icon: mail };
+} else if (pagePath.startsWith("/magazines/")) {
+  data = { title: "部誌", icon: text };
+} else if (pagePath.startsWith("/blog/")) {
+  data = { title: "ブログ", icon: file };
+}
+---
+
 <!doctype html>
-<html lang="en">
-	<head>
-		<meta charset="UTF-8" />
-		<meta name="viewport" content="width=device-width" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro Basics</title>
-	</head>
-	<body>
-		<slot />
-	</body>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width" />
+    <link rel="icon" href="/icon.png" />
+    <meta name="generator" content={Astro.generator} />
+    <title>{data ? `${data.title}｜群馬高専電算部` : "群馬高専電算部"}</title>
+
+    <!-- Font設定 -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=DotGothic16&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <main>
+      {
+        data ? (
+          <Window window={data}>
+            <slot />
+          </Window>
+        ) : (
+          <slot />
+        )
+      }
+    </main>
+    <Footer />
+  </body>
 </html>
 
+<style is:global>
+  @import "tailwindcss";
+</style>
+
 <style>
-	html,
-	body {
-		margin: 0;
-		width: 100%;
-		height: 100%;
-	}
+  html,
+  body {
+    margin: 0;
+    width: 100%;
+    height: 100svh;
+  }
+
+  html {
+    font-family: "DotGothic16", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+    color: #333333;
+  }
+
+  body {
+    display: flex;
+    flex-direction: column;
+  }
+
+  main {
+    flex-grow: 1;
+    min-height: 0;
+    background-color: #ccdab9;
+  }
 </style>

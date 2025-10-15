@@ -1,0 +1,198 @@
+---
+import { Image } from "astro:assets";
+import logo from "../assets/component/logo.png";
+import upArrow from "../assets/component/arrow_up.png";
+import downArrow from "../assets/component/arrow_down.png";
+import Container from "./Container.astro";
+import twitter from "../assets/component/twitter.png";
+import GitHub from "../assets/component/GitHub.png";
+---
+
+<footer>
+  <div class="footer-left">
+    <Image src={logo} alt="電算部" />
+  </div>
+  <div class="footer-right">
+    <Image class="upArrow active" src={upArrow} alt="上矢印" />
+    <Image class="downArrow" src={downArrow} alt="下矢印" />
+    <p id="realtime"></p>
+  </div>
+</footer>
+
+<!-- ポップアップ -->
+<div class="HPLink">
+  <Container width="200px" height="165px">
+    <div>
+      <p>過去のホームページ</p>
+      <ul>
+        <li><a href="https://nitgc-densan-club.github.io/">2023年度</a></li>
+        <li>
+          <a
+            href="https://nitgc-densan-club.github.io/21st.nitgc-densan-club.github.io/"
+          >
+            2021年度
+          </a>
+        </li>
+        <li><a href="https://gnctdensan.kai-seki.net/">2013年度</a></li>
+        <li><a href="http://d3bgnct.web.fc2.com/index.html">2010年度</a></li>
+      </ul>
+    </div>
+  </Container>
+</div>
+<div class="account">
+  <Container width="140px" height="90px">
+    <div>
+      <a href="https://x.com/gnct_densan">
+        <Image src={twitter} alt="twitter" />
+        <span>Twitter(X)</span>
+      </a>
+      <a href="https://github.com/nitgc-densan-club">
+        <Image src={GitHub} alt="GitHub" />
+        <span>GitHub</span>
+      </a>
+    </div>
+  </Container>
+</div>
+
+<style>
+  footer {
+    height: 60px;
+    padding: 0 8px;
+    background-color: #8c9991;
+    display: flex;
+    justify-content: space-between;
+    border-top: 2px solid #000;
+  }
+
+  img {
+    width: auto;
+    height: 38px;
+    object-fit: contain;
+  }
+
+  ul {
+    list-style: none;
+    margin: 0;
+    padding-left: 12px;
+  }
+
+  p {
+    margin: 0;
+    font-weight: bold;
+    font-size: 16px;
+  }
+
+  #realtime {
+    margin: 0 0 0 9px;
+    text-align: right;
+    color: #fff;
+    font-weight: bold;
+  }
+
+  .footer-right,
+  .footer-left {
+    display: flex;
+    align-items: center;
+    padding: 4px;
+    cursor: pointer;
+  }
+
+  .upArrow,
+  .downArrow {
+    display: none;
+  }
+
+  .HPLink div,
+  .account div {
+    width: 100%;
+    height: 100%;
+    padding: 10px;
+    box-sizing: border-box;
+  }
+
+  .HPLink {
+    display: none;
+    position: absolute;
+    bottom: 75px;
+    left: 15px;
+    font-size: 18px;
+  }
+
+  .account {
+    display: none;
+    position: absolute;
+    bottom: 75px;
+    right: 15px;
+    font-weight: bold;
+    font-size: 18px;
+  }
+
+  .account a {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+  }
+
+  .account img {
+    height: 26px;
+  }
+
+  .account div {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+  }
+
+  .active {
+    display: unset;
+  }
+</style>
+
+<script>
+  const digitAlign = (data: number) => {
+    let strData = String(data);
+    if (strData.length < 2) {
+      strData = "0" + strData;
+    }
+    return strData;
+  };
+
+  const showClock = () => {
+    var nowData = new Date();
+    let year = nowData.getFullYear();
+    let month = digitAlign(nowData.getMonth() + 1);
+    let date = digitAlign(nowData.getDate());
+    let hour = digitAlign(nowData.getHours());
+    let min = digitAlign(nowData.getMinutes());
+    let top = hour + ":" + min;
+    let bottom = year + "/" + month + "/" + date;
+    document.getElementById("realtime")!.innerHTML = top + "<br>" + bottom;
+  };
+  showClock();
+  setInterval(showClock, 1000);
+
+  // クリック時
+  let footerLeft = document.querySelector(".footer-left");
+  let HPLink = document.querySelector(".HPLink");
+  let footerRight = document.querySelector(".footer-right");
+  let account = document.querySelector(".account");
+  let upArrow = document.querySelector(".upArrow");
+  let downArrow = document.querySelector(".downArrow");
+
+  footerLeft!.addEventListener(
+    "click",
+    () => {
+      HPLink!.classList.toggle("active");
+    },
+    false,
+  );
+  footerRight!.addEventListener(
+    "click",
+    () => {
+      upArrow!.classList.toggle("active");
+      downArrow!.classList.toggle("active");
+      account!.classList.toggle("active");
+    },
+    false,
+  );
+</script>

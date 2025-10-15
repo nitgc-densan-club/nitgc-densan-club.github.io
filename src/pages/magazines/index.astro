@@ -1,0 +1,206 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import { Image } from "astro:assets";
+import upArrow from "../../assets/magazines/arrow_up.png";
+import downArrow from "../../assets/magazines/arrow_down.png";
+import Searchicon from "../../assets/magazines/search.png";
+import { getMagazine } from "../../libs/microcms";
+const response = await getMagazine({ orders: "-publishDate" });
+const contents = response.contents;
+---
+
+<script>
+  const Searchdate = document.getElementById("Search") as HTMLInputElement;
+  const element = document.getElementsByClassName("element"); //変換前時刻
+  const datelist = Array.from(element).map((el) => el.id);
+  const up = document.getElementById("up");
+  const down = document.getElementById("down");
+  const Onclick = document.getElementById("chenge");
+
+  Searchdate?.addEventListener("change", () => {
+    const data = Searchdate?.value;
+    var result = datelist.filter((date) => date.includes(data));
+    Array.from(element).forEach((data) => {
+      if (result.includes(data.id)) {
+        data.classList.remove("hidden");
+      } else {
+        data.classList.add("hidden");
+      }
+    });
+  });
+
+  Onclick?.addEventListener("click", () => {
+    var newlist = Array.from(element).map((date) =>
+      new Date(date.id).getFullYear(),
+    );
+    if (up?.classList.contains("hidden")) {
+      up.classList.remove("hidden");
+      down?.classList.add("hidden");
+      newlist.sort(comp2);
+      insert(newlist);
+    } else if (down?.classList.contains("hidden")) {
+      newlist.sort(comp1);
+      up?.classList.add("hidden");
+      down?.classList.remove("hidden");
+      insert(newlist);
+    }
+  });
+
+  function comp1(a: number, b: number) {
+    return a - b;
+  }
+  function comp2(a: number, b: number) {
+    return b - a;
+  }
+
+  function insert(list: number[]) {
+    var insertObj;
+    var insertPositionObj;
+    const top = document.getElementById("main");
+    top?.insertBefore(document.getElementById(String(list[0]))!, null);
+    for (var i = 1; i < list.length; i++) {
+      insertObj = document.getElementById(String(list[i]));
+      insertPositionObj = document.getElementById(String(list[i - 1]));
+      top?.insertBefore(insertObj!, insertPositionObj);
+    }
+  }
+</script>
+<Layout>
+  <div class="all">
+    <div class="search">
+      <div class="searchping">
+        <Image src={Searchicon} alt="" width={30} />
+        <input type="number" id="Search" placeholder="年を入力してください" />
+        <div id="chenge">
+          <Image src={upArrow} alt="" width={30} class="" id="up" />
+          <Image src={downArrow} alt="" width={30} class="hidden" id="down" />
+        </div>
+      </div>
+    </div>
+
+    <div id="main">
+      {
+        contents.map((list, index) => (
+          <div
+            class="element"
+            id={String(new Date(list.publishDate).getFullYear())}
+          >
+            <div class="inner">
+              <a href={`/magazines/${list.title}`} class="link" />
+              <div>
+                <img src={list.cover.url} class="img" />
+              </div>
+              <div class="detail">
+                <p class="title">{list.title}</p>
+                <p class="date" data-date={list.publishDate}>
+                  {new Date(list.publishDate).toLocaleDateString()}
+                </p>
+              </div>
+            </div>
+          </div>
+        ))
+      }
+    </div>
+  </div>
+</Layout>
+
+<style>
+  .all {
+    background-color: #f8faef;
+  }
+  .search {
+    background-color: #98a786;
+    width: 100%;
+    height: 60px;
+    border-bottom: 2px dashed #4c5b5c;
+    position: sticky;
+    top: 0;
+    z-index: 999;
+  }
+  .searchping {
+    display: flex;
+    height: 30px;
+    position: absolute;
+    top: 15px;
+    left: 10px;
+  }
+  #Search {
+    width: 300px;
+    margin-left: 10px;
+  }
+  input {
+    background-color: #f8faef;
+  }
+
+  .element {
+    overflow: auto;
+    margin-left: 30px;
+    margin-right: 30px;
+    height: 200px;
+    background-size: 12px 2px;
+    background-image: linear-gradient(
+      to right,
+      #4c5b5c,
+      #4c5b5c 6px,
+      transparent 6px,
+      transparent 12px
+    );
+    background-repeat: repeat-x;
+    background-position: left bottom;
+    /* visibility:collapse */
+  }
+  .element:hover {
+    background-color: #d8eff4;
+  }
+
+  .inner {
+    position: relative;
+    display: flex;
+    width: 100%;
+    height: 100%;
+  }
+
+  .link {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+  }
+
+  .img {
+    margin-top: 25px;
+    width: 100px;
+  }
+  .content {
+    text-decoration: none;
+  }
+
+  .detail {
+    width: calc(100% - 100px);
+  }
+  .title {
+    padding-top: 40px;
+    padding-left: 30px;
+    font-size: 30px;
+    color: #000000;
+
+    display: -webkit-box;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+  }
+  .date {
+    margin-top: 5px;
+    margin-left: 40px;
+    font-size: 20px;
+    color: #4c5b5c;
+  }
+  .link {
+    width: 100%;
+    height: 100%;
+    display: inline-block;
+  }
+  #chenge {
+    margin-left: 5px;
+  }
+</style>

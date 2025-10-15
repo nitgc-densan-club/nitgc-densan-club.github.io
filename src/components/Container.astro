@@ -1,0 +1,109 @@
+---
+const { width = "100px", height = "100px" } = Astro.props;
+---
+
+<div class="contain">
+  <div class="b1"></div>
+  <div class="b2"></div>
+  <div class="b3"></div>
+  <div class="b4"></div>
+  <div class="main">
+    <slot name="title-bar" />
+    <div class="contents-area">
+      <slot />
+    </div>
+  </div>
+</div>
+
+<style define:vars={{ width, height }}>
+  .contain {
+    position: relative;
+    width: var(--width);
+    height: var(--height);
+  }
+
+  .contain > * {
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    clip-path: polygon(
+      0 10px,
+      5px 10px,
+      5px 5px,
+      10px 5px,
+      10px 0px,
+      calc(100% - 10px) 0px,
+      calc(100% - 10px) 5px,
+      calc(100% - 5px) 5px,
+      calc(100% - 5px) 10px,
+      100% 10px,
+      100% calc(100% - 10px),
+      calc(100% - 5px) calc(100% - 10px),
+      calc(100% - 5px) calc(100% - 5px),
+      calc(100% - 10px) calc(100% - 5px),
+      calc(100% - 10px) 100%,
+      10px 100%,
+      10px calc(100% - 5px),
+      5px calc(100% - 5px),
+      5px calc(100% - 10px),
+      0px calc(100% - 10px)
+    );
+  }
+
+  .b1,
+  .b2,
+  .b3,
+  .b4 {
+    background-color: #4c5b5c;
+  }
+
+  .b1 {
+    translate: -5px -5px;
+  }
+  .b2 {
+    translate: 5px -5px;
+  }
+  .b3 {
+    translate: -5px 5px;
+  }
+  .b4 {
+    translate: 5px 5px;
+  }
+
+  .main {
+    background-color: #f8faef;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .contents-area {
+    flex-grow: 1;
+    overflow: auto;
+  }
+
+  /* スクロールバー */
+  .contents-area::-webkit-scrollbar {
+    width: auto;
+    background-color: #fff;
+  }
+
+  .contents-area::-webkit-scrollbar-track {
+    margin-top: 10px;
+    margin-bottom: 14px;
+  }
+
+  .contents-area::-webkit-scrollbar-thumb {
+    background-color: #747474;
+    border-right: 4px solid transparent;
+    border-left: 4px solid transparent;
+    background-clip: padding-box;
+  }
+
+  /* Firefox用 */
+  @-moz-document url-prefix() {
+    .contents-area {
+      scrollbar-width: auto;
+      scrollbar-color: #747474 #fff;
+    }
+  }
+</style>
