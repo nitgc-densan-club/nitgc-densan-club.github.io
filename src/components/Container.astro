@@ -81,7 +81,8 @@ const { width = "100px", height = "100px" } = Astro.props;
     overflow: auto;
   }
 
-  /* スクロールバー */
+  /* スマホ前提なのでスクロールバー設定を削除 */
+  /* スクロールバー
   .contents-area::-webkit-scrollbar {
     width: auto;
     background-color: #fff;
@@ -97,7 +98,7 @@ const { width = "100px", height = "100px" } = Astro.props;
     border-right: 4px solid transparent;
     border-left: 4px solid transparent;
     background-clip: padding-box;
-  }
+  } */
 
   /* Firefox用 */
   @-moz-document url-prefix() {
