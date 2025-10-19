@@ -16,6 +16,8 @@ if (pagePath.startsWith("/about/")) {
 } else if (pagePath.startsWith("/blog/")) {
   data = { title: "ブログ", icon: file };
 }
+
+const title = data ? `${data.title}｜群馬高専電算部` : "群馬高専電算部";
 ---
 
 <!doctype html>
@@ -25,7 +27,7 @@ if (pagePath.startsWith("/about/")) {
     <meta name="viewport" content="width=device-width" />
     <link rel="icon" href="/icon.png" />
     <meta name="generator" content={Astro.generator} />
-    <title>{data ? `${data.title}｜群馬高専電算部` : "群馬高専電算部"}</title>
+    <title>{title}</title>
 
     <!-- Font設定 -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -33,6 +35,15 @@ if (pagePath.startsWith("/about/")) {
     <link
       href="https://fonts.googleapis.com/css2?family=DotGothic16&display=swap"
       rel="stylesheet"
+    />
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary" />
+    <meta name="og:title" content={title} />
+    <meta name="og:description" content="群馬高専電算部の公式ホームページ" />
+    <meta
+      name="og:image"
+      content="https://images.microcms-assets.io/assets/4b94e0cab2b34c6c9645e5fcd9929734/e79317aad8f24aaf95e43cfe0fda294d/icon-400x400.jpeg"
     />
   </head>
   <body>
