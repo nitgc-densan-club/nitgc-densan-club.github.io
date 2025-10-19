@@ -113,19 +113,19 @@ const url = item?.url;
     }
   }
 
-  function onPrevPage() {
+  async function onPrevPage() {
     if (pageNum <= 1) return;
 
     pageNum--;
-    queueRenderPage(pageNum);
+    await queueRenderPage(pageNum);
   }
   document.getElementById("prev").addEventListener("click", onPrevPage);
 
-  function onNextPage() {
+  async function onNextPage() {
     if (pageNum >= pdfDoc.numPages) return;
 
     pageNum++;
-    queueRenderPage(pageNum);
+    await queueRenderPage(pageNum);
   }
   document.getElementById("next").addEventListener("click", onNextPage);
   if (pdfPath == undefined) {
@@ -143,7 +143,7 @@ const url = item?.url;
 
   // Windowのリサイズ時に再レンダリング
   new ResizeObserver(async () => {
-    await renderPage(pageNum);
+    await queueRenderPage(pageNum);
   }).observe(document.getElementById("the-canvas-container"));
 </script>
 
