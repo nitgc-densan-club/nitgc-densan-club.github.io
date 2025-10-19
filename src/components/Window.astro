@@ -10,7 +10,7 @@ interface Props {
 const { window } = Astro.props;
 ---
 
-<div class="window">
+<div id="window" class="window-padding">
   <Container width="100%" height="100%">
     <div class="title-bar" slot="title-bar">
       <div class="title-bar-left">
@@ -22,7 +22,7 @@ const { window } = Astro.props;
           <div class="min-btn"></div>
         </div>
         <div>
-          <div class="max-btn"></div>
+          <div id="maxmize-btn" class="max-btn"></div>
         </div>
         <a href="/" class="close-btn">
           <Image src={crossMark} alt="バツ" width={22} />
@@ -32,6 +32,21 @@ const { window } = Astro.props;
     <slot />
   </Container>
 </div>
+
+<script>
+  let isMaxmize = false;
+  const window = document.getElementById("window");
+
+  function maxmize() {
+    if (!window) return;
+    isMaxmize = !isMaxmize;
+    window.className = isMaxmize ? "" : "window-padding";
+  }
+
+  const maxmizeBtn = document.getElementById("maxmize-btn");
+  maxmizeBtn?.addEventListener("click", maxmize);
+</script>
+
 <style>
   span {
     color: white;
@@ -39,9 +54,13 @@ const { window } = Astro.props;
     font-size: 22px;
   }
 
-  .window {
-    margin: 20px 17.5px;
-    height: calc(100% - 40px);
+  #window {
+    height: 100%;
+    overflow: hidden;
+  }
+
+  .window-padding {
+    padding: 20px;
   }
 
   .title-bar {
@@ -78,6 +97,6 @@ const { window } = Astro.props;
   .max-btn {
     width: 18px;
     height: 18px;
-    border: 3px solid #4c5b5c;
+    border: 3px solid whitesmoke;
   }
 </style>
