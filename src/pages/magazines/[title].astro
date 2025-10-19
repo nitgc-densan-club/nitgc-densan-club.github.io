@@ -23,19 +23,18 @@ const url = item?.url;
 <Layout>
   <div id="container" data-url={url}></div>
   <div class="custom-main">
-    <a href="./" class="back">
-      <Image src={Arrow} alt="" width={30} />
+    <a href="/magazines/" class="back">
+      <Image src={Arrow} alt="" width={24} />
     </a>
     <div class="pdfsize">
       <canvas id="the-canvas"></canvas>
     </div>
-    <div class="prevnext">
-      <button id="prev" type="button">Back</button>
+    <div class="footer">
+      <button id="prev" type="button">Prev</button>
+      <div>
+        <span id="page_num"></span> / <span id="page_count"></span>
+      </div>
       <button id="next" type="button">Next</button>
-      <br />
-      <span
-        >Page: <span id="page_num"></span> / <span id="page_count"></span></span
-      >
     </div>
     <script src="/build/pdf.mjs" type="module"></script>
   </div>
@@ -145,29 +144,24 @@ const url = item?.url;
   }
   .pdfsize {
     width: auto;
-    overflow: auto;
   }
   .custom-main {
     width: auto;
     height: 100%;
     background-color: #f8faef;
   }
-  .prevnext {
-    font-size: 30px;
+  .footer {
+    display: flex;
+    justify-content: space-between;
+    padding: 0 4px;
+
+    font-size: 24px;
+    font-weight: bold;
     color: #4c5b5c;
   }
-  #prev {
-    float: left;
-  }
-  #next {
-    float: right;
-  }
+
   .back {
-    display: inline-block;
-    margin: 2px;
-  }
-  .pdfsize {
-    width: 100%;
-    height: 80%;
+    position: absolute;
+    padding: 4px;
   }
 </style>
