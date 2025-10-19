@@ -15,7 +15,7 @@ const contents = response.contents;
   const datelist = Array.from(element).map((el) => el.id);
   const up = document.getElementById("up");
   const down = document.getElementById("down");
-  const Onclick = document.getElementById("chenge");
+  const Onclick = document.getElementById("change");
 
   Searchdate?.addEventListener("change", () => {
     const data = Searchdate?.value;
@@ -71,9 +71,9 @@ const contents = response.contents;
       <div class="searchping">
         <Image src={Searchicon} alt="" width={30} />
         <input type="number" id="Search" placeholder="年を入力してください" />
-        <div id="chenge">
-          <Image src={upArrow} alt="" width={30} class="" id="up" />
-          <Image src={downArrow} alt="" width={30} class="hidden" id="down" />
+        <div id="change">
+          <Image src={upArrow} alt="" width={30} class="hidden" id="up" />
+          <Image src={downArrow} alt="" width={30} class="" id="down" />
         </div>
       </div>
     </div>
@@ -110,8 +110,6 @@ const contents = response.contents;
   }
   .search {
     background-color: #98a786;
-    width: 100%;
-    height: 60px;
     border-bottom: 2px dashed #4c5b5c;
     position: sticky;
     top: 0;
@@ -119,16 +117,16 @@ const contents = response.contents;
   }
   .searchping {
     display: flex;
-    height: 30px;
-    position: absolute;
-    top: 15px;
-    left: 10px;
+    align-items: center;
+    padding: 10px;
+    gap: 4px;
   }
   #Search {
-    width: 300px;
-    margin-left: 10px;
+    width: 100%;
+    height: 30px;
   }
   input {
+    padding: 0 4px;
     background-color: #f8faef;
   }
 
@@ -199,8 +197,5 @@ const contents = response.contents;
     width: 100%;
     height: 100%;
     display: inline-block;
-  }
-  #chenge {
-    margin-left: 5px;
   }
 </style>

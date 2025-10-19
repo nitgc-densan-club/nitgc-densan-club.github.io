@@ -23,121 +23,129 @@ const url = item?.url;
 <Layout>
   <div id="container" data-url={url}></div>
   <div class="custom-main">
-    <a href="./" class="back">
-      <Image src={Arrow} alt="" width={30} />
+    <a href="/magazines/" class="back">
+      <Image src={Arrow} alt="" width={24} />
     </a>
-    <div class="pdfsize">
+    <div id="the-canvas-container" class="pdfsize">
       <canvas id="the-canvas"></canvas>
     </div>
-    <div class="prevnext">
-      <button id="prev" type="button">Back</button>
+    <div class="footer">
+      <button id="prev" type="button">Prev</button>
+      <div>
+        <span id="page_num"></span> / <span id="page_count"></span>
+      </div>
       <button id="next" type="button">Next</button>
-      <br />
-      <span
-        >Page: <span id="page_num"></span> / <span id="page_count"></span></span
-      >
     </div>
-    <script src="/build/pdf.mjs" type="module"></script>
   </div>
-
-  <script id="script" type="module">
-    (async () => {
-      const container = document.getElementById("container");
-      const pdfPath = container.dataset.url;
-
-      pdfjsLib.GlobalWorkerOptions.workerSrc = "/build/pdf.worker.mjs";
-
-      var canvas = document.getElementById("the-canvas");
-      var context = canvas.getContext("2d");
-      //
-      var pdfDoc = null,
-        pageNum = 1,
-        pageRendering = false,
-        pageNumPending = null;
-
-      function renderPage(num) {
-        pageRendering = true;
-        // Using promise to fetch the page
-        pdfDoc.getPage(num).then(function (page) {
-          var unscaledViewport = page.getViewport({ scale: 1 });
-          //var scale=canvas.width / unscaledViewport.width;
-          var custom_main = document.getElementsByClassName("custom-main")[0];
-          var scale = Math.min(
-            custom_main.clientWidth / unscaledViewport.width,
-            custom_main.clientHeight / unscaledViewport.height,
-          );
-          var viewport = page.getViewport({ scale: scale });
-
-          // Support HiDPI-screens.
-          var outputScale = window.devicePixelRatio || 1;
-
-          var transform =
-            outputScale !== 1 ? [outputScale, 0, 0, outputScale, 0, 0] : null;
-
-          // Render PDF page into canvas context
-          var renderContext = {
-            canvasContext: context,
-            transform: transform,
-            viewport: viewport,
-          };
-          var renderTask = page.render(renderContext);
-          canvas.width = Math.floor(viewport.width * outputScale);
-          canvas.height = Math.floor(viewport.height * outputScale);
-          canvas.style.height = Math.floor(viewport.height) + "px";
-          canvas.style.width = Math.floor(viewport.width) + "px";
-          // Wait for rendering to finish
-          renderTask.promise.then(function () {
-            pageRendering = false;
-            if (pageNumPending !== null) {
-              // New page rendering is pending
-              renderPage(pageNumPending);
-              pageNumPending = null;
-            }
-          });
-        });
-
-        // Update page counters
-        document.getElementById("page_num").textContent = num;
-      }
-
-      function queueRenderPage(num) {
-        if (pageRendering) {
-          pageNumPending = num;
-        } else {
-          renderPage(num);
-        }
-      }
-
-      function onPrevPage() {
-        if (pageNum <= 1) {
-          return;
-        }
-        pageNum--;
-        queueRenderPage(pageNum);
-      }
-      document.getElementById("prev").addEventListener("click", onPrevPage);
-
-      function onNextPage() {
-        if (pageNum >= pdfDoc.numPages) {
-          return;
-        }
-        pageNum++;
-        queueRenderPage(pageNum);
-      }
-      document.getElementById("next").addEventListener("click", onNextPage);
-      if (pdfPath == undefined) {
-        var loadingTask = pdfjsLib.getDocument(
-          "../../src/assets/magazines/no_image.pdf",
-        );
-      } else {
-        var loadingTask = pdfjsLib.getDocument(pdfPath);
-      }
-      pdfDoc = await loadingTask.promise;
-      document.getElementById("page_count").textContent = pdfDoc.numPages;
-      renderPage(pageNum);
-    })();
-  </script>
 </Layout>
+
+<script is:inline type="module">
+  import "/build/pdf.mjs";
+  pdfjsLib.GlobalWorkerOptions.workerSrc = "/build/pdf.worker.mjs";
+
+  const container = document.getElementById("container");
+  const pdfPath = container.dataset.url;
+
+  const canvas = document.getElementById("the-canvas");
+  const context = canvas.getContext("2d");
+
+  let pdfDoc = null;
+  let pageNum = 1;
+  const pendingQueue = [];
+  let pageRendering = false;
+
+  async function renderPage(num) {
+    pageRendering = true;
+    // Using promise to fetch the page
+    const page = await pdfDoc.getPage(num);
+
+    var unscaledViewport = page.getViewport({ scale: 1 });
+    //var scale=canvas.width / unscaledViewport.width;
+    var custom_main = document.getElementsByClassName("custom-main")[0];
+    var scale = Math.min(
+      custom_main.clientWidth / unscaledViewport.width,
+      custom_main.clientHeight / unscaledViewport.height,
+    );
+    var viewport = page.getViewport({ scale: scale });
+
+    // Support HiDPI-screens.
+    var outputScale = window.devicePixelRatio || 1;
+
+    var transform =
+      outputScale !== 1 ? [outputScale, 0, 0, outputScale, 0, 0] : null;
+
+    // Render PDF page into canvas context
+    var renderContext = {
+      canvasContext: context,
+      transform: transform,
+      viewport: viewport,
+    };
+    var renderTask = page.render(renderContext);
+    canvas.width = Math.floor(viewport.width * outputScale);
+    canvas.height = Math.floor(viewport.height * outputScale);
+    canvas.style.height = Math.floor(viewport.height) + "px";
+    canvas.style.width = Math.floor(viewport.width) + "px";
+    // Wait for rendering to finish
+    await renderTask.promise;
+
+    pageRendering = false;
+
+    // Update page counters
+    document.getElementById("page_num").textContent = num;
+
+    // if (pageNumPending !== null) {
+    //   // New page rendering is pending
+    //   await renderPage(pageNumPending);
+    //   pageNumPending = null;
+    // }
+
+    // pendingにキューを使用するように変更
+    if (pendingQueue.length) {
+      await renderPage(pendingQueue.shift());
+    }
+  }
+
+  async function queueRenderPage(num) {
+    if (pageRendering) {
+      pendingQueue.push(num);
+    } else {
+      await renderPage(num);
+    }
+  }
+
+  async function onPrevPage() {
+    if (pageNum <= 1) return;
+
+    pageNum--;
+    await queueRenderPage(pageNum);
+  }
+  document.getElementById("prev").addEventListener("click", onPrevPage);
+
+  async function onNextPage() {
+    if (pageNum >= pdfDoc.numPages) return;
+
+    pageNum++;
+    await queueRenderPage(pageNum);
+  }
+  document.getElementById("next").addEventListener("click", onNextPage);
+  if (pdfPath == undefined) {
+    var loadingTask = pdfjsLib.getDocument(
+      "../../src/assets/magazines/no_image.pdf",
+    );
+  } else {
+    var loadingTask = pdfjsLib.getDocument(pdfPath);
+  }
+
+  pdfDoc = await loadingTask.promise;
+  document.getElementById("page_count").textContent = pdfDoc.numPages;
+
+  await renderPage(pageNum);
+
+  // Windowのリサイズ時に再レンダリング
+  new ResizeObserver(async () => {
+    await queueRenderPage(pageNum);
+  }).observe(document.getElementById("the-canvas-container"));
+</script>
 
 <style>
   #the-canvas {
@@ -145,29 +153,24 @@ const url = item?.url;
   }
   .pdfsize {
     width: auto;
-    overflow: auto;
   }
   .custom-main {
     width: auto;
     height: 100%;
     background-color: #f8faef;
   }
-  .prevnext {
-    font-size: 30px;
+  .footer {
+    display: flex;
+    justify-content: space-between;
+    padding: 0 4px;
+
+    font-size: 24px;
+    font-weight: bold;
     color: #4c5b5c;
   }
-  #prev {
-    float: left;
-  }
-  #next {
-    float: right;
-  }
+
   .back {
-    display: inline-block;
-    margin: 2px;
-  }
-  .pdfsize {
-    width: 100%;
-    height: 80%;
+    position: absolute;
+    padding: 4px;
   }
 </style>
