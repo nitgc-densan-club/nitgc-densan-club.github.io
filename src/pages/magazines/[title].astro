@@ -27,9 +27,12 @@ const url = item?.url;
       <Image src={Arrow} alt="" width={24} />
     </a>
     <div id="the-canvas-container" class="pdfsize">
-      <canvas id="the-canvas"></canvas>
+      <div id="loading">
+        PDF読み込み中...<br />時間がかかる場合があります
+      </div>
+      <canvas id="the-canvas"> </canvas>
     </div>
-    <div class="footer">
+    <div id="nav" hidden>
       <button id="prev" type="button">Prev</button>
       <div>
         <span id="page_num"></span> / <span id="page_count"></span>
@@ -141,6 +144,12 @@ const url = item?.url;
 
   await renderPage(pageNum);
 
+  // レンダリング完了後にloadingコンポーネントを非表示
+  document.getElementById("loading").hidden = true;
+
+  // レンダリング完了後にnavコンポーネントを表示
+  document.getElementById("nav").hidden = false;
+
   // Windowのリサイズ時に再レンダリング
   new ResizeObserver(async () => {
     await queueRenderPage(pageNum);
@@ -148,18 +157,18 @@ const url = item?.url;
 </script>
 
 <style>
-  #the-canvas {
-    width: fit-content;
+  #loading {
+    padding: 16px 0;
+    text-align: center;
   }
-  .pdfsize {
-    width: auto;
-  }
+
   .custom-main {
     width: auto;
     height: 100%;
     background-color: #f8faef;
   }
-  .footer {
+
+  #nav {
     display: flex;
     justify-content: space-between;
     padding: 0 4px;
