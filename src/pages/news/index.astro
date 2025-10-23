@@ -86,11 +86,11 @@ function dateFormat(date: string) {
       /*一覧を生成*/
       NewsList.map((news) => (
         <div class="news">
+          <p class="NewsTitle">件名:{news.title}</p>
           <div class="TopText">
-            <p class="NewsTitle">件名:{news.title}</p>
+            <p class="NewsFrom">from:densan-club-nitgc</p>
             <p class="NewsDate">{dateFormat(news.updatedAt)}</p>
           </div>
-          <p class="NewsFrom">from:densan-club-nitgc</p>
           <div class="dotbox" />
           <div class="TextOmission">
             <p class="NewsText">{removeHtmlTag(news.body)}</p>
@@ -135,7 +135,7 @@ function dateFormat(date: string) {
   /*newsのみに適用するCSS*/
 
   .news {
-    height: 200px;
+    /* height: 200px; */
     width: 100%;
     background: #f8faef;
     border: thin #000 solid;
@@ -143,12 +143,16 @@ function dateFormat(date: string) {
 
   /*件名*/
   .NewsTitle {
+    margin: 8px;
+    margin-bottom: 0;
     font-size: 16px;
     text-align: left;
   }
 
   /*日時*/
   .NewsDate {
+    margin: 8px;
+    margin-top: 4px;
     font-size: 16px;
     font-weight: bold;
     text-align: right;
@@ -156,6 +160,8 @@ function dateFormat(date: string) {
 
   /*送信元*/
   .NewsFrom {
+    margin: 8px;
+    margin-top: 4px;
     font-size: 15px;
     font-weight: bold;
     text-align: left;
@@ -164,7 +170,7 @@ function dateFormat(date: string) {
   /*本文*/
   .NewsText {
     text-align: left;
-    font-size: 20px;
+    /* font-size: 20px; */
     margin: 4px 7px;
   }
 
@@ -177,12 +183,13 @@ function dateFormat(date: string) {
 
   /*文章が長い場合に省略する*/
   .TextOmission {
-    height: 90px;
+    /* height: 90px; */
     overflow: hidden;
     line-height: 1.5rem;
     display: -webkit-box;
+    text-overflow: ellipsis;
     -webkit-box-orient: vertical;
-    -webkit-line-clamp: 5;
+    -webkit-line-clamp: 4;
   }
 
   .ReadMore {
@@ -248,8 +255,16 @@ function dateFormat(date: string) {
   /*本文*/
   .DetailText {
     text-align: left;
-    font-size: 20px;
+    /* font-size: 20px; */
     margin: 4px 7px;
+
+    p {
+      padding-bottom: 8px;
+    }
+
+    a {
+      color: blueviolet;
+    }
   }
 
   .back {
